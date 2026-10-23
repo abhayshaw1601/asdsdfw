@@ -73,53 +73,53 @@ export const BufferPage: React.FC<BufferPageProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Plain English Trader Explanation Banner */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
-        <div className="flex flex-col md:flex-row items-start justify-between gap-4">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
-              <ShieldCheck className="w-5 h-5" />
+      {/* Trader Explanation Banner */}
+      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-sm">
+        <div className="flex flex-col md:flex-row items-start justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
+              <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-white tracking-tight">
+              <div className="flex items-center gap-3">
+                <h2 className="text-base font-semibold text-white tracking-tight">
                   Why Buffer Sizing Matters: Over-Forecast Shortfall Risk
                 </h2>
-                <span className="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">
+                <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/10 font-medium">
                   Empirical Quantile Sizing
                 </span>
               </div>
-              <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
-                When a wind forecast is higher than outturn (<strong>Error &gt; 0</strong>), the day-ahead trading team under-buys thermal/residual power, expecting wind to meet demand. During actual delivery, wind generation falls short, forcing the utility to buy expensive real-time balancing power or face cash-out imbalance penalties.
+              <p className="text-xs text-neutral-300 mt-2 max-w-3xl leading-relaxed font-light">
+                When a wind forecast is higher than outturn (<strong>Error &gt; 0</strong>), the day-ahead trading team under-buys thermal or residual power, expecting wind to meet demand. During actual delivery, wind generation falls short, forcing the utility to buy expensive real-time balancing power or face cash-out imbalance penalties.
               </p>
-              <p className="text-xs text-slate-400 mt-1.5">
+              <p className="text-xs text-neutral-400 mt-1.5 font-light">
                 <strong>Solution:</strong> Procure a safety buffer sized to the <strong>P90 (90%)</strong> or <strong>P95 (95%)</strong> empirical shortfall quantile for each specific hour of the day.
               </p>
             </div>
           </div>
 
           {/* Confidence Selector Buttons */}
-          <div className="bg-slate-850 p-2 rounded-xl border border-slate-750 flex flex-col gap-1.5 shrink-0">
-            <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider text-center">
+          <div className="bg-neutral-950/80 p-2.5 rounded-2xl border border-neutral-800 flex flex-col gap-2 shrink-0">
+            <span className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider text-center">
               Protection Target
             </span>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setSelectedConfidence(0.90)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all ${
                   selectedConfidence === 0.90
-                    ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
-                    : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                    ? "bg-white text-neutral-950 shadow-sm"
+                    : "bg-neutral-800/80 text-neutral-300 hover:bg-neutral-700/80"
                 }`}
               >
                 P90 (90% Sizing)
               </button>
               <button
                 onClick={() => setSelectedConfidence(0.95)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all ${
                   selectedConfidence === 0.95
-                    ? "bg-amber-600 text-white shadow-sm shadow-amber-500/30"
-                    : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                    ? "bg-white text-neutral-950 shadow-sm"
+                    : "bg-neutral-800/80 text-neutral-300 hover:bg-neutral-700/80"
                 }`}
               >
                 P95 (95% Sizing)
@@ -135,7 +135,7 @@ export const BufferPage: React.FC<BufferPageProps> = ({
           label="Average P90 Safety Buffer"
           value={formatPower(meanBufferP90, unit)}
           badge="90% Confidence"
-          badgeColor="blue"
+          badgeColor="slate"
           subValue="Covers 9 out of 10 over-forecast shortfalls"
           icon={<ShieldCheck className="w-4 h-4 text-white" />}
         />
@@ -143,48 +143,48 @@ export const BufferPage: React.FC<BufferPageProps> = ({
           label="Average P95 Safety Buffer"
           value={formatPower(meanBufferP95, unit)}
           badge="95% Confidence"
-          badgeColor="amber"
+          badgeColor="slate"
           subValue="High confidence extreme shortfall protection"
-          icon={<CheckCircle2 className="w-4 h-4 text-amber-400" />}
+          icon={<CheckCircle2 className="w-4 h-4 text-white" />}
         />
         <MetricCard
           label="Peak Shortfall Hour"
           value={`${String(peakBufferHour).padStart(2, "0")}:00 London`}
           badge="Max Exposure"
-          badgeColor="rose"
+          badgeColor="slate"
           subValue={`Requires up to ${formatPower(peakBufferP95, unit)} buffer`}
-          icon={<AlertCircle className="w-4 h-4 text-rose-400" />}
+          icon={<AlertCircle className="w-4 h-4 text-white" />}
         />
         <MetricCard
           label="Protection Target"
           value={`${(selectedConfidence * 100).toFixed(0)}% Sizing`}
           badge="Active Policy"
-          badgeColor="emerald"
+          badgeColor="slate"
           subValue="Quantile applied to hourly shortfall curves"
-          icon={<ShieldCheck className="w-4 h-4 text-emerald-400" />}
+          icon={<ShieldCheck className="w-4 h-4 text-white" />}
         />
       </div>
 
       {/* 24-Hour Buffer Sizing Chart */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
           <div>
-            <h3 className="text-sm font-bold text-white tracking-tight">
+            <h3 className="text-sm font-semibold text-white tracking-tight">
               Recommended Procurement Buffer by Hour of Day (00:00 - 23:00)
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-neutral-400 mt-0.5 font-light">
               Values in {unit} calculated from {startDate} to {endDate} at {deadlineHour.toString().padStart(2, "0")}:00 London deadline
             </p>
           </div>
           <div className="flex items-center gap-4 text-xs">
-            <span className="flex items-center gap-1.5 text-amber-400">
-              <span className="w-3 h-1 bg-amber-500 rounded" /> P95 Buffer ({unit})
+            <span className="flex items-center gap-1.5 text-white font-medium">
+              <span className="w-3 h-1 bg-white rounded-full" /> P95 Buffer ({unit})
             </span>
-            <span className="flex items-center gap-1.5 text-white">
-              <span className="w-3 h-1 bg-white rounded" /> P90 Buffer ({unit})
+            <span className="flex items-center gap-1.5 text-neutral-300">
+              <span className="w-3 h-1 bg-neutral-400 rounded-full" /> P90 Buffer ({unit})
             </span>
-            <span className="flex items-center gap-1.5 text-emerald-400">
-              <span className="w-3 h-1 bg-emerald-500 rounded" /> Mean Shortfall ({unit})
+            <span className="flex items-center gap-1.5 text-neutral-400">
+              <span className="w-3 h-1 bg-neutral-600 rounded-full" /> Mean Shortfall ({unit})
             </span>
           </div>
         </div>
@@ -192,33 +192,33 @@ export const BufferPage: React.FC<BufferPageProps> = ({
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-              <XAxis dataKey="hour" stroke="#64748b" tick={{ fontSize: 11 }} />
-              <YAxis stroke="#64748b" tick={{ fontSize: 11 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#262626" />
+              <XAxis dataKey="hour" stroke="#737373" tick={{ fontSize: 11, fill: "#a3a3a3" }} />
+              <YAxis stroke="#737373" tick={{ fontSize: 11, fill: "#a3a3a3" }} />
               <Tooltip
                 content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {
                     const row = payload[0].payload;
                     return (
-                      <div className="bg-slate-950 border border-slate-800 p-3 rounded-lg shadow-xl text-xs space-y-1.5">
-                        <div className="font-bold text-white border-b border-slate-800 pb-1">
+                      <div className="bg-neutral-950/95 border border-neutral-800 p-3.5 rounded-xl shadow-2xl text-xs space-y-1.5 backdrop-blur-md">
+                        <div className="font-semibold text-white border-b border-neutral-800 pb-1.5">
                           Delivery Hour: {label} (Local London)
                         </div>
-                        <div className="text-amber-400 flex justify-between">
+                        <div className="text-white flex justify-between gap-6">
                           <span>P95 Safety Buffer:</span>
-                          <span className="font-semibold">{row.bufferP95} {unit}</span>
+                          <span className="font-medium">{row.bufferP95} {unit}</span>
                         </div>
-                        <div className="text-white flex justify-between">
+                        <div className="text-neutral-300 flex justify-between gap-6">
                           <span>P90 Safety Buffer:</span>
-                          <span className="font-semibold">{row.bufferP90} {unit}</span>
+                          <span className="font-medium">{row.bufferP90} {unit}</span>
                         </div>
-                        <div className="text-emerald-400 flex justify-between">
+                        <div className="text-neutral-400 flex justify-between gap-6">
                           <span>Mean Over-Forecast Shortfall:</span>
                           <span>{row.meanShortfall} {unit}</span>
                         </div>
-                        <div className="text-rose-400 flex justify-between border-t border-slate-800 pt-1">
+                        <div className="text-neutral-300 flex justify-between gap-6 border-t border-neutral-800 pt-1.5">
                           <span>Max Historical Shortfall:</span>
-                          <span className="font-semibold">{row.maxShortfall} {unit}</span>
+                          <span className="font-medium text-white">{row.maxShortfall} {unit}</span>
                         </div>
                       </div>
                     );
@@ -226,67 +226,67 @@ export const BufferPage: React.FC<BufferPageProps> = ({
                   return null;
                 }}
               />
-              <Area type="monotone" dataKey="bufferP95" fill="#f59e0b" fillOpacity={0.15} stroke="#d97706" strokeWidth={2} name="P95 Buffer" />
-              <Line type="monotone" dataKey="bufferP90" stroke="#3b82f6" strokeWidth={2.5} dot={{ r: 3, fill: "#3b82f6" }} name="P90 Buffer" />
-              <Line type="monotone" dataKey="meanShortfall" stroke="#10b981" strokeWidth={1.8} strokeDasharray="3 2" dot={false} name="Mean Shortfall" />
+              <Area type="monotone" dataKey="bufferP95" fill="#ffffff" fillOpacity={0.08} stroke="#ffffff" strokeWidth={2} name="P95 Buffer" />
+              <Line type="monotone" dataKey="bufferP90" stroke="#d4d4d4" strokeWidth={2} strokeDasharray="4 2" dot={{ r: 2.5, fill: "#ffffff" }} name="P90 Buffer" />
+              <Line type="monotone" dataKey="meanShortfall" stroke="#737373" strokeWidth={1.5} strokeDasharray="3 3" dot={false} name="Mean Shortfall" />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* Hourly Buffer Sizing Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-white tracking-tight">
+      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl overflow-hidden backdrop-blur-sm shadow-sm">
+        <div className="p-5 border-b border-neutral-800 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-white tracking-tight">
             Hourly Safety Buffer Procurement Guidance Table
           </h3>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-neutral-400 font-light">
             24 delivery periods | Target: P{(selectedConfidence * 100).toFixed(0)}
           </span>
         </div>
         <div className="overflow-x-auto max-h-80 overflow-y-auto">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-950 text-slate-400 sticky top-0 border-b border-slate-800 font-semibold">
+          <table className="w-full text-left text-xs text-neutral-300">
+            <thead className="bg-neutral-950/80 text-neutral-400 sticky top-0 border-b border-neutral-800 font-medium">
               <tr>
-                <th className="py-2.5 px-4">Delivery Hour</th>
-                <th className="py-2.5 px-4">Recommended Buffer ({unit})</th>
-                <th className="py-2.5 px-4">P90 Buffer ({unit})</th>
-                <th className="py-2.5 px-4">P95 Buffer ({unit})</th>
-                <th className="py-2.5 px-4">Mean Shortfall ({unit})</th>
-                <th className="py-2.5 px-4">Max Shortfall Observed ({unit})</th>
-                <th className="py-2.5 px-4">Risk Tier</th>
+                <th className="py-3 px-4">Delivery Hour</th>
+                <th className="py-3 px-4">Recommended Buffer ({unit})</th>
+                <th className="py-3 px-4">P90 Buffer ({unit})</th>
+                <th className="py-3 px-4">P95 Buffer ({unit})</th>
+                <th className="py-3 px-4">Mean Shortfall ({unit})</th>
+                <th className="py-3 px-4">Max Shortfall Observed ({unit})</th>
+                <th className="py-3 px-4">Risk Tier</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-850">
+            <tbody className="divide-y divide-neutral-800/60">
               {rows.map((r) => {
                 const isHighRisk = r.bufferP95 > meanBufferP95 * 1.1;
                 return (
-                  <tr key={r.hour} className="hover:bg-slate-855 transition-colors">
-                    <td className="py-2.5 px-4 font-mono font-medium text-white">
+                  <tr key={r.hour} className="hover:bg-neutral-800/30 transition-colors">
+                    <td className="py-3 px-4 font-mono font-medium text-white">
                       {String(r.hour).padStart(2, "0")}:00
                     </td>
-                    <td className="py-2.5 px-4 font-bold text-white">
+                    <td className="py-3 px-4 font-semibold text-white">
                       {formatPower(r.bufferMw, unit, false)}
                     </td>
-                    <td className="py-2.5 px-4 font-semibold text-slate-200">
+                    <td className="py-3 px-4 text-neutral-200">
                       {formatPower(r.bufferP90, unit, false)}
                     </td>
-                    <td className="py-2.5 px-4 font-semibold text-amber-400">
+                    <td className="py-3 px-4 text-white font-medium">
                       {formatPower(r.bufferP95, unit, false)}
                     </td>
-                    <td className="py-2.5 px-4 text-emerald-400">
+                    <td className="py-3 px-4 text-neutral-300">
                       {formatPower(r.meanOverForecast, unit, false)}
                     </td>
-                    <td className="py-2.5 px-4 text-rose-400 font-semibold">
+                    <td className="py-3 px-4 text-neutral-200">
                       {formatPower(r.maxShortfall, unit, false)}
                     </td>
-                    <td className="py-2.5 px-4">
+                    <td className="py-3 px-4">
                       {isHighRisk ? (
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                          Peak Shortfall Risk
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-white/10 text-white border border-white/20">
+                          Peak Risk
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-750 text-slate-300 border border-slate-650">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-neutral-800/80 text-neutral-400 border border-neutral-700/60">
                           Standard Risk
                         </span>
                       )}

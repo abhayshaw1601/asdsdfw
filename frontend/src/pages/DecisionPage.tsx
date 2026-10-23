@@ -1,20 +1,19 @@
 import React from "react";
 import {
   ResponsiveContainer,
+  ComposedChart,
   Line,
   XAxis,
   YAxis,
   Tooltip,
   CartesianGrid,
-  ComposedChart,
 } from "recharts";
 import { Clock, TrendingUp, TrendingDown, Zap } from "lucide-react";
 import { useDecisionQuery } from "../hooks/useForecastData";
 import { MetricCard } from "../components/MetricCard";
-import { LoadingSkeleton } from "../components/LoadingSkeleton";
 import { ErrorAlert } from "../components/ErrorAlert";
-import { formatPower, convertValue } from "../lib/units";
-import type { UnitType } from "../api/types";
+import type { UnitType, SeriesPoint } from "../api/types";
+import { formatPower } from "../lib/units";
 
 interface DecisionPageProps {
   day: string;
@@ -27,69 +26,70 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
   deadlineHour,
   unit,
 }) => {
-  const { data, isLoading, error, refetch } = useDecisionQuery(day, deadlineHour);
+  const { data, isLoading, isError, error, refetch } = useDecisionQuery(
+    day,
+    deadlineHour
+  );
 
   if (isLoading) {
-    return <LoadingSkeleton rows={4} height="h-64" />;
+    return (
+      <div className="space-y-6 animate-pulse">
+        <div className="h-28 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-32 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl" />
+          ))}
+        </div>
+        <div className="h-96 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl" />
+      </div>
+    );
   }
 
-  if (error || !data) {
+  if (isError || !data) {
     return (
       <ErrorAlert
-        message={error instanceof Error ? error.message : "Failed to load decision data"}
-        onRetry={() => refetch()}
+        message={error instanceof Error ? error.message : "Unable to retrieve decision data"}
+        onRetry={refetch}
       />
     );
   }
 
   const { points, summary, deadlineLocal, deadlineUtc } = data;
 
-  // Transform points for chart display with converted units
-  const chartData = points.map((p) => {
-    const timeLabel = new Date(p.startTime).toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "UTC",
-    });
-    return {
-      time: timeLabel,
-      fullTime: p.startTime,
-      forecast: convertValue(p.forecast, unit),
-      actual: p.actual !== null ? convertValue(p.actual, unit) : null,
-      error: p.error !== null ? convertValue(p.error, unit) : null,
-      horizon: p.horizonHours,
-      publishTime: new Date(p.publishTime).toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "UTC",
-      }),
-    };
-  });
+  // Format Recharts data
+  const chartData = points.map((p: SeriesPoint) => ({
+    time: new Date(p.startTime).toISOString().slice(11, 16),
+    forecast: p.forecast,
+    actual: p.actual,
+    error: p.error,
+    horizon: p.horizonHours,
+    fullTime: p.startTime,
+  }));
 
   return (
     <div className="space-y-6">
       {/* Top Banner Context Card */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-white/10 text-white border border-white/20">
+              <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20">
                 Decision Snapshot
               </span>
-              <h2 className="text-lg font-bold text-white tracking-tight">
-                Delivery Day: {new Date(day).toLocaleDateString("en-GB", { dateStyle: "full" })}
+              <h2 className="text-xl font-light text-white tracking-tight">
+                Delivery Day: <span className="font-normal">{new Date(day).toLocaleDateString("en-GB", { dateStyle: "full" })}</span>
               </h2>
             </div>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-neutral-400 mt-1 font-light">
               Forecasts strictly frozen at gate closure on D-1. No post-deadline data lookahead is permitted.
             </p>
           </div>
-          <div className="flex items-center gap-2 bg-slate-800/80 px-3.5 py-2 rounded-lg border border-slate-700/60">
-            <Clock className="w-4 h-4 text-amber-400 shrink-0" />
+          <div className="flex items-center gap-2 bg-neutral-950 px-4 py-2 rounded-full border border-neutral-800">
+            <Clock className="w-4 h-4 text-white shrink-0" />
             <div className="text-xs">
-              <span className="text-slate-400">Decision Freeze: </span>
-              <span className="font-semibold text-white">{deadlineLocal}</span>
-              <span className="text-slate-500 ml-1">({new Date(deadlineUtc).toISOString().slice(11, 16)} UTC)</span>
+              <span className="text-neutral-400 font-light">Decision Freeze: </span>
+              <span className="font-medium text-white">{deadlineLocal}</span>
+              <span className="text-neutral-500 ml-1">({new Date(deadlineUtc).toISOString().slice(11, 16)} UTC)</span>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
           badge="Peak"
           badgeColor="emerald"
           subValue="Maximum hourly wind production"
-          icon={<TrendingUp className="w-4 h-4 text-emerald-400" />}
+          icon={<TrendingUp className="w-4 h-4 text-white" />}
         />
         <MetricCard
           label="Minimum Trough Output"
@@ -119,7 +119,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
           badge="Trough"
           badgeColor="slate"
           subValue="Minimum hourly generation base"
-          icon={<TrendingDown className="w-4 h-4 text-slate-400" />}
+          icon={<TrendingDown className="w-4 h-4 text-white" />}
         />
         <MetricCard
           label="Decision Lead Time"
@@ -127,27 +127,27 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
           badge="Auction Gate"
           badgeColor="amber"
           subValue="Time between D-1 09:00 and delivery hours"
-          icon={<Clock className="w-4 h-4 text-amber-400" />}
+          icon={<Clock className="w-4 h-4 text-white" />}
         />
       </div>
 
       {/* Main Intraday Profile Chart */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-sm font-bold text-white tracking-tight">
+            <h3 className="text-base font-semibold text-white tracking-tight">
               24-Hour Wind Profile: Decision Forecast vs Outturn Actuals
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-neutral-400 mt-0.5 font-light">
               Hourly comparison for power purchase decisions (values in {unit})
             </p>
           </div>
-          <div className="flex items-center gap-4 text-xs font-medium">
+          <div className="flex items-center gap-5 text-xs font-medium">
             <span className="flex items-center gap-1.5 text-white">
               <span className="w-3 h-1 bg-white rounded" /> Decision Forecast
             </span>
-            <span className="flex items-center gap-1.5 text-orange-400">
-              <span className="w-3 h-1 bg-orange-500 rounded" /> Outturn Actual (FUELHH)
+            <span className="flex items-center gap-1.5 text-neutral-400">
+              <span className="w-3 h-1 bg-neutral-400 rounded" /> Outturn Actual (FUELHH)
             </span>
           </div>
         </div>
@@ -155,37 +155,36 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-              <XAxis dataKey="time" stroke="#64748b" tick={{ fontSize: 11 }} />
-              <YAxis stroke="#64748b" tick={{ fontSize: 11 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#262626" />
+              <XAxis dataKey="time" stroke="#737373" tick={{ fontSize: 11 }} />
+              <YAxis stroke="#737373" tick={{ fontSize: 11 }} />
               <Tooltip
                 content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {
                     const row = payload[0].payload;
                     return (
-                      <div className="bg-slate-950 border border-slate-800 p-3 rounded-lg shadow-xl text-xs space-y-1.5 min-w-[200px]">
-                        <div className="font-bold text-white border-b border-slate-800 pb-1">
+                      <div className="bg-neutral-950 border border-neutral-800 p-3.5 rounded-xl shadow-xl text-xs space-y-1.5 min-w-[200px]">
+                        <div className="font-semibold text-white border-b border-neutral-800 pb-1">
                           Delivery Time: {label} UTC
                         </div>
-                        <div className="flex justify-between text-white">
+                        <div className="flex justify-between text-white font-medium">
                           <span>Decision Forecast:</span>
-                          <span className="font-semibold">{row.forecast} {unit}</span>
+                          <span>{row.forecast} {unit}</span>
                         </div>
                         {row.actual !== null && (
-                          <div className="flex justify-between text-orange-400">
+                          <div className="flex justify-between text-neutral-300">
                             <span>Outturn Actual:</span>
-                            <span className="font-semibold">{row.actual} {unit}</span>
+                            <span>{row.actual} {unit}</span>
                           </div>
                         )}
                         {row.error !== null && (
-                          <div className={`flex justify-between font-semibold ${row.error > 0 ? "text-amber-400" : "text-emerald-400"}`}>
-                            <span>{row.error > 0 ? "Over-Forecast (Shortfall):" : "Under-Forecast:"}</span>
+                          <div className="flex justify-between text-white border-t border-neutral-800/80 pt-1">
+                            <span>Deviation:</span>
                             <span>{row.error > 0 ? `+${row.error}` : row.error} {unit}</span>
                           </div>
                         )}
-                        <div className="border-t border-slate-800 pt-1 text-slate-400 flex justify-between">
-                          <span>Latest Revision:</span>
-                          <span>{row.publishTime} UTC ({row.horizon}h lead)</span>
+                        <div className="text-neutral-500 text-[11px] font-light">
+                          Horizon: {row.horizon}h lead time
                         </div>
                       </div>
                     );
@@ -196,18 +195,18 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
               <Line
                 type="monotone"
                 dataKey="forecast"
-                stroke="#3b82f6"
+                stroke="#ffffff"
                 strokeWidth={2.5}
-                dot={{ r: 3, fill: "#3b82f6" }}
+                dot={{ r: 3, fill: "#ffffff" }}
                 name="Decision Forecast"
               />
               <Line
                 type="monotone"
                 dataKey="actual"
-                stroke="#f97316"
+                stroke="#a3a3a3"
                 strokeWidth={2}
-                strokeDasharray="4 2"
-                dot={{ r: 2.5, fill: "#f97316" }}
+                strokeDasharray="4 4"
+                dot={{ r: 2.5, fill: "#a3a3a3" }}
                 name="Outturn Actual"
               />
             </ComposedChart>
@@ -215,61 +214,61 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
         </div>
       </div>
 
-      {/* Decision Points Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-white tracking-tight">
-            Hourly Audit & Revision Ledger
-          </h3>
-          <span className="text-xs text-slate-400">
-            {points.length} hourly delivery targets
+      {/* Hourly Data Table */}
+      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl overflow-hidden backdrop-blur-sm">
+        <div className="p-5 border-b border-neutral-800 flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-semibold text-white tracking-tight">
+              Hourly Forecasts & Actuals Schedule
+            </h3>
+            <p className="text-xs text-neutral-400 mt-0.5 font-light">
+              24 hourly delivery settlement windows for {day}
+            </p>
+          </div>
+          <span className="text-xs text-neutral-400 font-mono">
+            Values in {unit}
           </span>
         </div>
-        <div className="overflow-x-auto max-h-80 overflow-y-auto">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-950 text-slate-400 sticky top-0 border-b border-slate-800 font-semibold">
+
+        <div className="overflow-x-auto max-h-96 overflow-y-auto">
+          <table className="w-full text-left text-xs text-neutral-300">
+            <thead className="bg-neutral-950 text-neutral-400 sticky top-0 border-b border-neutral-800 font-medium">
               <tr>
-                <th className="py-2.5 px-4">Delivery Target (UTC)</th>
-                <th className="py-2.5 px-4">Decision Forecast ({unit})</th>
-                <th className="py-2.5 px-4">Outturn Actual ({unit})</th>
-                <th className="py-2.5 px-4">Error ({unit})</th>
-                <th className="py-2.5 px-4">Selected Publish Time</th>
-                <th className="py-2.5 px-4">Lead Horizon</th>
+                <th className="py-3 px-4">Delivery Time (UTC)</th>
+                <th className="py-3 px-4">Decision Forecast</th>
+                <th className="py-3 px-4">Actual Outturn</th>
+                <th className="py-3 px-4">Error / Deviation</th>
+                <th className="py-3 px-4">Publish Timestamp</th>
+                <th className="py-3 px-4">Lead Time</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-850">
-              {points.map((p, idx) => {
+            <tbody className="divide-y divide-neutral-800/70">
+              {points.map((p: SeriesPoint, idx: number) => {
                 const isOver = p.error !== null && p.error > 0;
                 return (
-                  <tr key={idx} className="hover:bg-slate-855 transition-colors">
-                    <td className="py-2.5 px-4 font-mono font-medium text-white">
+                  <tr key={idx} className="hover:bg-neutral-850/50 transition-colors">
+                    <td className="py-3 px-4 font-mono font-medium text-white">
                       {new Date(p.startTime).toISOString().slice(11, 16)} UTC
                     </td>
-                    <td className="py-2.5 px-4 font-semibold text-white">
+                    <td className="py-3 px-4 font-semibold text-white">
                       {formatPower(p.forecast, unit, false)}
                     </td>
-                    <td className="py-2.5 px-4 text-orange-400 font-semibold">
+                    <td className="py-3 px-4 text-white font-medium">
                       {p.actual !== null ? formatPower(p.actual, unit, false) : "-"}
                     </td>
-                    <td className="py-2.5 px-4">
+                    <td className="py-3 px-4">
                       {p.error !== null ? (
-                        <span
-                          className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-semibold ${
-                            isOver
-                              ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                              : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                          }`}
-                        >
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-neutral-800 text-white border border-neutral-700">
                           {isOver ? `+${formatPower(p.error, unit, false)} (Shortfall)` : `${formatPower(p.error, unit, false)} (Surplus)`}
                         </span>
                       ) : (
                         "-"
                       )}
                     </td>
-                    <td className="py-2.5 px-4 text-slate-400 font-mono">
+                    <td className="py-3 px-4 text-neutral-400 font-mono">
                       {new Date(p.publishTime).toISOString().slice(11, 16)} UTC
                     </td>
-                    <td className="py-2.5 px-4 text-slate-300 font-medium">
+                    <td className="py-3 px-4 text-neutral-300 font-medium">
                       {p.horizonHours}h
                     </td>
                   </tr>

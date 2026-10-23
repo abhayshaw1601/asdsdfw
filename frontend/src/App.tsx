@@ -38,7 +38,7 @@ export const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-[#070b09] text-white flex flex-col font-sans selection:bg-neutral-700 selection:text-white">
       {/* Top Header (shown on analytical/decision pages) */}
       {activeTab !== "overview" && (
         <Header
@@ -94,12 +94,12 @@ export const AppContent: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-6 text-xs text-slate-500">
+      <footer className="border-t border-neutral-800 bg-[#070b09] py-6 text-xs text-neutral-400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div>
             Wind Forecast Decision Portal | Built for UK Day-Ahead Electricity Buying
           </div>
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex items-center gap-4 text-neutral-300">
             <span>Elexon BMRS Datasets (FUELHH & WINDFOR)</span>
             <span>|</span>
             <button

@@ -155,7 +155,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
             <div>
-              <span className="text-[11px] uppercase tracking-widest text-emerald-400 font-semibold">
+              <span className="text-[11px] uppercase tracking-widest text-neutral-400 font-medium">
                 January 2026 Ground Truth
               </span>
               <h2 className="text-xl font-bold text-white tracking-tight mt-0.5">
@@ -171,21 +171,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
               <div className="flex items-center justify-between text-xs text-neutral-400 mb-2">
                 <span>Month Coverage</span>
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <CheckCircle2 className="w-4 h-4 text-white" />
               </div>
               <div className="text-3xl font-light text-white tracking-tight">100.0%</div>
               <p className="text-[11px] text-neutral-500 mt-1">744 of 744 target hours (0 gaps)</p>
             </div>
 
-            <div className="bg-neutral-900/60 border border-amber-500/20 rounded-2xl p-6 backdrop-blur-sm">
-              <div className="flex items-center justify-between text-xs text-amber-400 mb-2">
+            <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
+              <div className="flex items-center justify-between text-xs text-neutral-400 mb-2">
                 <span>Systematic Bias</span>
-                <AlertTriangle className="w-4 h-4 text-amber-400" />
+                <AlertTriangle className="w-4 h-4 text-white" />
               </div>
-              <div className="text-3xl font-light text-amber-400 tracking-tight">
+              <div className="text-3xl font-light text-white tracking-tight">
                 +{formatPower(1851.53, unit, true)}
               </div>
-              <p className="text-[11px] text-amber-300/70 mt-1">Forecast systematically over-predicts</p>
+              <p className="text-[11px] text-neutral-500 mt-1">Forecast systematically over-predicts</p>
             </div>
 
             <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
@@ -200,7 +200,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             </div>
 
             <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
-              <div className="flex items-center justify-between text-xs text-white mb-2">
+              <div className="flex items-center justify-between text-xs text-neutral-400 mb-2">
                 <span>P95 Reserve Buffer</span>
                 <ShieldCheck className="w-4 h-4 text-white" />
               </div>
@@ -215,7 +215,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
         {/* 4 Specialized Trading Modules */}
         <div className="space-y-6">
           <div className="max-w-2xl">
-            <span className="text-[11px] uppercase tracking-widest text-emerald-400 font-semibold">
+            <span className="text-[11px] uppercase tracking-widest text-neutral-400 font-medium">
               Platform Architecture
             </span>
             <h2 className="text-2xl font-bold text-white tracking-tight mt-1">
@@ -316,21 +316,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
         {/* The Day-Ahead Trading Reality */}
         <div className="rounded-2xl border border-neutral-800 bg-neutral-900/50 p-8 sm:p-10 space-y-6">
           <div className="max-w-3xl">
-            <span className="text-[11px] uppercase tracking-widest text-emerald-400 font-semibold">
+            <span className="text-[11px] uppercase tracking-widest text-neutral-400 font-medium">
               Market Economics
             </span>
             <h2 className="text-xl font-bold text-white tracking-tight mt-1 mb-2">
               Why Day-Ahead Power Buyers Must Procure with Buffers
             </h2>
             <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-light">
-              In Great Britain, national wind forecasts systematically over-predict generation during winter peak demand. In January 2026, the average over-estimation was <span className="font-semibold text-amber-400">+{formatPower(1851.53, unit, true)}</span>.
+              In Great Britain, national wind forecasts systematically over-predict generation during winter peak demand. In January 2026, the average over-estimation was <span className="font-semibold text-white">+{formatPower(1851.53, unit, true)}</span>.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
             <div className="border border-neutral-800/80 bg-black/40 rounded-xl p-5 space-y-2">
-              <div className="flex items-center gap-2 text-rose-400 font-semibold text-xs">
-                <AlertTriangle className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-white font-semibold text-xs">
+                <AlertTriangle className="w-4 h-4 text-white" />
                 <span>1. The Unhedged Trap</span>
               </div>
               <p className="text-xs text-neutral-400 leading-relaxed font-light">
@@ -340,7 +340,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
 
             <div className="border border-neutral-800/80 bg-black/40 rounded-xl p-5 space-y-2">
               <div className="flex items-center gap-2 text-white font-semibold text-xs">
-                <Clock className="w-4 h-4" />
+                <Clock className="w-4 h-4 text-white" />
                 <span>2. Auction Gate Deadlines</span>
               </div>
               <p className="text-xs text-neutral-400 leading-relaxed font-light">
@@ -349,8 +349,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             </div>
 
             <div className="border border-neutral-800/80 bg-black/40 rounded-xl p-5 space-y-2">
-              <div className="flex items-center gap-2 text-emerald-400 font-semibold text-xs">
-                <ShieldCheck className="w-4 h-4" />
+              <div className="flex items-center gap-2 text-white font-semibold text-xs">
+                <ShieldCheck className="w-4 h-4 text-white" />
                 <span>3. Quantitative Buffering</span>
               </div>
               <p className="text-xs text-neutral-400 leading-relaxed font-light">
@@ -364,7 +364,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
         <div className="rounded-2xl border border-neutral-800 bg-gradient-to-r from-neutral-900/80 via-neutral-900/40 to-neutral-950 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2 text-white font-semibold text-sm">
-              <Database className="w-4 h-4 text-emerald-400" />
+              <Database className="w-4 h-4 text-white" />
               <span>Official Elexon BMRS Ingestion Pipeline</span>
             </div>
             <p className="text-xs text-neutral-400 max-w-2xl font-light">

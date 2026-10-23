@@ -32,7 +32,7 @@
 ## 2. Ingest (`fetch_elexon.py`)
 - Base (confirmed working): `https://data.elexon.co.uk/bmrs/api/v1/datasets/{FUELHH|WINDFOR}/stream`
   - Required query params: `from=<ISO-date>` and `to=<ISO-date>` (e.g. `?from=2026-01-01&to=2026-01-08`).
-  - ⚠️ Opening the URL in a browser **without params returns 404** — this is expected; always pass date params in code.
+  - Note: Opening the URL in a browser **without params returns 404** — this is expected; always pass date params in code.
   - The `bmrs.elexon.co.uk/api-documentation/...` links in the spec are the JS doc portal, not callable API URLs.
 - FUELHH: window startTime 2026-01-01..2026-02-01 UTC; keep `fuelType == "WIND"`; columns `startTime`, `generation`.
 - WINDFOR: publishTime window 2025-12-15..2026-01-31; keep rows with `startTime` in Jan 2026; columns `startTime`, `publishTime`, `generation`.
