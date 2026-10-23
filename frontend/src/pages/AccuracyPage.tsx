@@ -52,13 +52,13 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
   if (isLoading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-28 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl" />
+        <div className="h-20 bg-black/30 border border-white/10 rounded-2xl backdrop-blur-xl" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-32 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl" />
+            <div key={i} className="h-28 bg-black/30 border border-white/10 rounded-2xl backdrop-blur-xl" />
           ))}
         </div>
-        <div className="h-80 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl" />
+        <div className="h-80 bg-black/30 border border-white/10 rounded-2xl backdrop-blur-xl" />
       </div>
     );
   }
@@ -80,7 +80,6 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
 
   const { summary, hourly } = metricsData;
 
-  // Format Recharts Time Series Data
   const timeSeriesData = (seriesData?.points || []).map((p: SeriesPoint) => ({
     date: new Date(p.startTime).toLocaleDateString("en-GB", { month: "short", day: "numeric" }),
     forecast: p.forecast,
@@ -89,7 +88,6 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
     fullTime: p.startTime,
   }));
 
-  // Format Hourly Distribution Data
   const hourlyData = hourly.map((h: HourMetrics) => ({
     hour: `${String(h.hour).padStart(2, "0")}:00`,
     mae: h.mae,
@@ -100,82 +98,66 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20">
-                Performance Evaluation
-              </span>
-              <h2 className="text-xl font-light text-white tracking-tight">
-                Benchmark Accuracy: {startDate} to {endDate}
-              </h2>
-            </div>
-            <p className="text-xs text-neutral-400 mt-1 font-light">
-              Computed under the {deadlineHour.toString().padStart(2, "0")}:00 London decision freeze rule
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-medium px-3 py-1 rounded-full bg-neutral-950 border border-neutral-800 text-white font-mono">
-              N = {summary.n.toLocaleString()} hourly targets
+      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15">
+              Accuracy Metrics
             </span>
+            <h2 className="text-base sm:text-lg font-light text-white tracking-tight">
+              Period: <span className="font-semibold">{startDate} &rarr; {endDate}</span>
+            </h2>
           </div>
+          <span className="text-xs font-mono text-neutral-300 bg-black/40 px-3 py-1 rounded-full border border-white/15">
+            N = {summary.n.toLocaleString()} hours
+          </span>
         </div>
       </div>
 
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <MetricCard
-          label="MAE (Mean Absolute Error)"
+          label="MAE"
           value={formatPower(summary.mae, unit)}
-          badge="Average Error"
-          badgeColor="blue"
-          subValue={`Normalized MAE: ${(summary.nmae * 100).toFixed(1)}% of mean generation`}
+          badge="Avg Error"
+          subValue={`Normalized: ${(summary.nmae * 100).toFixed(1)}%`}
           icon={<Award className="w-4 h-4 text-white" />}
         />
         <MetricCard
-          label="RMSE (Root Mean Square)"
+          label="RMSE"
           value={formatPower(summary.rmse, unit)}
-          badge="Outlier Penalized"
-          badgeColor="slate"
-          subValue="Sensitivity metric to extreme volatility spikes"
+          badge="Outliers"
+          subValue="Volatility variance"
           icon={<Activity className="w-4 h-4 text-white" />}
         />
         <MetricCard
-          label="Forecast Bias (Mean Error)"
+          label="Bias"
           value={`+${formatPower(summary.bias, unit)}`}
           badge="Over-Forecast"
-          badgeColor="amber"
-          subValue="Positive bias indicates consistent shortfall risk"
+          subValue="Shortfall exposure"
           icon={<AlertTriangle className="w-4 h-4 text-white" />}
         />
         <MetricCard
-          label="P95 Max Deviation Band"
+          label="P95 Tail Risk"
           value={formatPower(summary.p95, unit)}
-          badge="95% Coverage"
-          badgeColor="rose"
-          subValue={`P50: ${formatPower(summary.p50, unit, false)} | P90: ${formatPower(summary.p90, unit, false)} ${unit}`}
+          badge="95% Cov"
+          subValue={`P50: ${formatPower(summary.p50, unit, false)} • P90: ${formatPower(summary.p90, unit, false)}`}
           icon={<BarChart3 className="w-4 h-4 text-white" />}
         />
       </div>
 
-      {/* Date Range Actual vs Forecast Time Series */}
-      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
+      {/* Actual vs Forecast Time Series */}
+      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-          <div>
-            <h3 className="text-base font-semibold text-white tracking-tight">
-              Actual vs Decision-Time Forecast Time Series
-            </h3>
-            <p className="text-xs text-neutral-400 font-light mt-0.5">
-              Evaluated across {summary.n} hourly delivery intervals ({startDate} to {endDate})
-            </p>
-          </div>
-          <div className="flex items-center gap-5 text-xs font-medium">
+          <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
+            Actual vs Decision Forecast ({unit})
+          </h3>
+          <div className="flex items-center gap-4 text-xs font-medium">
             <span className="flex items-center gap-1.5 text-white">
-              <span className="w-3 h-1 bg-white rounded" /> Forecast ({unit})
+              <span className="w-3 h-1 bg-white rounded" /> Forecast
             </span>
             <span className="flex items-center gap-1.5 text-neutral-400">
-              <span className="w-3 h-1 bg-neutral-400 rounded" /> Outturn Actual ({unit})
+              <span className="w-3 h-1 bg-neutral-400 rounded" /> Actual
             </span>
           </div>
         </div>
@@ -191,14 +173,14 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
                   if (active && payload && payload.length) {
                     const row = payload[0].payload;
                     return (
-                      <div className="bg-neutral-950 border border-neutral-800 p-3.5 rounded-xl shadow-xl text-xs space-y-1">
-                        <div className="text-white font-semibold border-b border-neutral-800 pb-1">
+                      <div className="bg-neutral-950/95 border border-white/15 p-3 rounded-xl shadow-2xl text-xs space-y-1 backdrop-blur-md">
+                        <div className="text-white font-semibold border-b border-white/10 pb-1">
                           {new Date(row.fullTime).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" })}
                         </div>
-                        <div className="text-white font-medium">Forecast: {row.forecast} {unit}</div>
+                        <div className="text-white">Forecast: {row.forecast} {unit}</div>
                         <div className="text-neutral-300">Actual: {row.actual} {unit}</div>
                         {row.error !== null && (
-                          <div className="text-white border-t border-neutral-800 pt-1 font-medium">
+                          <div className="text-white border-t border-white/10 pt-1">
                             Error: {row.error > 0 ? `+${row.error}` : row.error} {unit}
                           </div>
                         )}
@@ -215,17 +197,14 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
         </div>
       </div>
 
-      {/* Two Column Grid: Error by Hour of Day & Error Distribution */}
+      {/* Two Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Hourly Error Breakdown */}
-        <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
+        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl">
           <div className="mb-4">
-            <h3 className="text-base font-semibold text-white tracking-tight">
-              Error by Local Hour of Day (00:00 - 23:00)
+            <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
+              Diurnal Error (00:00 - 23:00)
             </h3>
-            <p className="text-xs text-neutral-400 font-light mt-0.5">
-              MAE (white bars) and positive Bias (neutral line) across 24 hours
-            </p>
           </div>
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -238,9 +217,9 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
                     if (active && payload && payload.length) {
                       const row = payload[0].payload;
                       return (
-                        <div className="bg-neutral-950 border border-neutral-800 p-3 rounded-xl text-xs space-y-1">
+                        <div className="bg-neutral-950/95 border border-white/15 p-3 rounded-xl text-xs space-y-1 backdrop-blur-md">
                           <div className="font-semibold text-white">Hour {row.hour}</div>
-                          <div className="text-white font-medium">MAE: {row.mae} {unit}</div>
+                          <div className="text-white">MAE: {row.mae} {unit}</div>
                           <div className="text-neutral-300">Bias: +{row.bias} {unit}</div>
                         </div>
                       );
@@ -254,36 +233,30 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
           </div>
         </div>
 
-        {/* Error Histogram / Quantile Box */}
-        <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
-          <div className="mb-4">
-            <h3 className="text-base font-semibold text-white tracking-tight">
-              Forecast Error Summary & Quantile Metrics
+        {/* Quantile Summary */}
+        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between">
+          <div>
+            <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight mb-4">
+              Error Quantiles ({unit})
             </h3>
-            <p className="text-xs text-neutral-400 font-light mt-0.5">
-              Parametric benchmarks reflecting systematic day-ahead over-forecasting
-            </p>
-          </div>
-          <div className="grid grid-cols-3 gap-3 pt-2">
-            <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800 text-center">
-              <span className="text-[11px] text-neutral-400 uppercase tracking-wider font-light">P50 (Median)</span>
-              <div className="text-2xl font-light text-white mt-1">{formatPower(summary.p50, unit, false)}</div>
-              <span className="text-[10px] text-neutral-500 font-mono">{unit}</span>
-            </div>
-            <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800 text-center">
-              <span className="text-[11px] text-neutral-400 uppercase tracking-wider font-light">P90 Percentile</span>
-              <div className="text-2xl font-light text-white mt-1">{formatPower(summary.p90, unit, false)}</div>
-              <span className="text-[10px] text-neutral-500 font-mono">{unit}</span>
-            </div>
-            <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800 text-center">
-              <span className="text-[11px] text-neutral-400 uppercase tracking-wider font-light">P95 Tail Risk</span>
-              <div className="text-2xl font-light text-white mt-1">{formatPower(summary.p95, unit, false)}</div>
-              <span className="text-[10px] text-neutral-500 font-mono">{unit}</span>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="p-4 rounded-xl bg-black/40 border border-white/10 text-center">
+                <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">P50 Median</span>
+                <div className="text-xl sm:text-2xl font-light text-white mt-1">{formatPower(summary.p50, unit, false)}</div>
+              </div>
+              <div className="p-4 rounded-xl bg-black/40 border border-white/10 text-center">
+                <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">P90 Quantile</span>
+                <div className="text-xl sm:text-2xl font-light text-white mt-1">{formatPower(summary.p90, unit, false)}</div>
+              </div>
+              <div className="p-4 rounded-xl bg-black/40 border border-white/10 text-center">
+                <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">P95 Tail</span>
+                <div className="text-xl sm:text-2xl font-light text-white mt-1">{formatPower(summary.p95, unit, false)}</div>
+              </div>
             </div>
           </div>
-          <p className="text-xs text-neutral-400 mt-6 leading-relaxed font-light">
-            Across {startDate} to {endDate}, over 85% of delivery hours exhibited positive forecast errors, confirming that nominal day-ahead buying results in persistent unhedged physical deficits.
-          </p>
+          <div className="mt-4 p-3 rounded-xl bg-black/40 border border-white/10 text-xs text-neutral-300 font-light">
+            Systematic over-forecasting is observed across &gt;85% of intervals, confirming persistent shortfall risk.
+          </div>
         </div>
       </div>
     </div>

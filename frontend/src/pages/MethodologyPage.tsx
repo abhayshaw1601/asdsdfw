@@ -5,140 +5,132 @@ export const MethodologyPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Intro Header */}
-      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-8 backdrop-blur-sm shadow-sm">
-        <div className="flex items-start gap-5">
-          <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
-            <BookOpen className="w-6 h-6" />
+      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
+            <BookOpen className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white tracking-tight">
-              Methodology, System Architecture & Operational Assumptions
+            <h2 className="text-base sm:text-lg font-semibold text-white tracking-tight">
+              System Architecture & Methodology Specifications
             </h2>
-            <p className="text-sm text-neutral-300 mt-1 leading-relaxed font-light">
-              Complete reference documentation for energy traders, risk managers, and engineering reviewers evaluating the Wind Forecast Decision Portal.
+            <p className="text-xs text-neutral-400 font-light mt-0.5">
+              Technical standards and mathematical formulation for zero-lookahead day-ahead wind power decisions.
             </p>
           </div>
         </div>
       </div>
 
       {/* Grid: Decision Rule & No-Lookahead Guarantee */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-sm space-y-4">
-          <div className="flex items-center gap-2.5 text-white font-semibold text-sm">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-3">
+          <div className="flex items-center gap-2 text-white font-semibold text-xs sm:text-sm">
             <ShieldCheck className="w-4 h-4 text-white" />
-            1. The Decision Rule & Gate Closure
+            Auction Gate Closure Rule
           </div>
-          <p className="text-xs text-neutral-300 leading-relaxed font-light">
-            In the UK electricity wholesale market, electricity is procured on day $D-1$ for physical delivery on day $D$. Power purchase orders on the day-ahead auction close between <strong>09:20 and 09:50 UK time</strong>.
+          <p className="text-xs text-neutral-300 font-light">
+            Electricity orders on UK day-ahead auctions close between <strong>09:20 and 09:50 UK time</strong>.
           </p>
-          <div className="bg-neutral-950/60 p-4 rounded-xl border border-neutral-800 text-xs text-neutral-300 space-y-1.5 font-light">
-            <div className="font-semibold text-white">Default Decision Deadline:</div>
-            <div className="text-neutral-200">D-1 at 09:00 Europe/London</div>
-            <div className="text-neutral-400 text-[11px] mt-1">
-              Provides a 20-minute operational buffer before auction gate closure.
-            </div>
+          <div className="bg-black/40 p-3 rounded-xl border border-white/10 text-xs space-y-1 font-light">
+            <span className="font-medium text-white">Default Freeze: </span>
+            <span className="text-neutral-300">09:00 Europe/London (D-1)</span>
+            <p className="text-[11px] text-neutral-400">20-minute operational buffer before auction gate.</p>
           </div>
         </div>
 
-        <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-sm space-y-4">
-          <div className="flex items-center gap-2.5 text-white font-semibold text-sm">
+        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-3">
+          <div className="flex items-center gap-2 text-white font-semibold text-xs sm:text-sm">
             <CheckCircle2 className="w-4 h-4 text-white" />
-            2. Strict No-Lookahead Guarantee
+            Strict No-Lookahead Guarantee
           </div>
-          <p className="text-xs text-neutral-300 leading-relaxed font-light">
-            To prevent retrospective bias in historical simulations, our decision selection algorithm strictly enforces:
+          <p className="text-xs text-neutral-300 font-light">
+            Enforces strict temporal separation to eliminate retrospective bias:
           </p>
-          <div className="bg-neutral-950/60 p-4 rounded-xl border border-neutral-800 font-mono text-xs text-white">
+          <div className="bg-black/40 p-3 rounded-xl border border-white/10 font-mono text-xs text-white">
             publishTime &le; deadline_utc(delivery_day(t))
           </div>
-          <p className="text-[11px] text-neutral-400 leading-relaxed font-light">
-            Any forecast revision published after the auction deadline (even by 1 second) is mathematically barred from selection. Verified by automated unit tests.
+          <p className="text-[11px] text-neutral-400 font-light">
+            Forecasts published after deadline are mathematically barred. Verified by unit tests.
           </p>
         </div>
       </div>
 
-      {/* Over-Forecast Shortfall Asymmetry */}
-      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-sm space-y-4">
-        <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-2.5">
+      {/* Risk Asymmetry */}
+      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-3">
+        <h3 className="text-xs sm:text-sm font-semibold text-white tracking-tight flex items-center gap-2">
           <Layers className="w-4 h-4 text-white" />
-          3. The Risk Asymmetry: Why Over-Forecasts Cause Shortfalls
+          Commercial Risk Asymmetry
         </h3>
-        <p className="text-xs text-neutral-300 leading-relaxed font-light">
-          Wind forecast errors have asymmetric commercial consequences for an energy utility:
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-          <div className="bg-neutral-950/60 border border-neutral-800 rounded-xl p-4 text-xs space-y-1.5">
-            <div className="font-semibold text-white">Over-Forecast ($Error &gt; 0$) &rarr; Shortfall Risk</div>
-            <p className="text-neutral-400 text-[11px] leading-relaxed font-light">
-              The forecast estimates higher wind production than actual outturn. The trader procures less thermal/market power on D-1. During delivery, the utility experiences a power deficit and must purchase expensive balancing power at imbalance settlement prices.
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+          <div className="bg-black/40 border border-white/10 rounded-xl p-3.5 text-xs space-y-1">
+            <span className="font-semibold text-white">Over-Forecast (Error &gt; 0) &rarr; Shortfall</span>
+            <p className="text-neutral-400 text-[11px] font-light">
+              Wind falls short of procurement. Buyer must purchase expensive balancing power at cash-out prices.
             </p>
           </div>
-          <div className="bg-neutral-950/60 border border-neutral-800 rounded-xl p-4 text-xs space-y-1.5">
-            <div className="font-semibold text-white">Under-Forecast ($Error &lt; 0$) &rarr; Spill/Surplus</div>
-            <p className="text-neutral-400 text-[11px] leading-relaxed font-light">
-              Actual wind generation exceeds expectations. The utility has excess power that can be sold back into the intraday market or settled through the system buy price.
+          <div className="bg-black/40 border border-white/10 rounded-xl p-3.5 text-xs space-y-1">
+            <span className="font-semibold text-white">Under-Forecast (Error &lt; 0) &rarr; Spill</span>
+            <p className="text-neutral-400 text-[11px] font-light">
+              Generation exceeds expectations. Excess power is sold in intraday or system buy price.
             </p>
           </div>
         </div>
       </div>
 
       {/* Mathematical Formulas */}
-      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-sm space-y-5">
-        <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-2.5">
+      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+        <h3 className="text-xs sm:text-sm font-semibold text-white tracking-tight flex items-center gap-2">
           <Cpu className="w-4 h-4 text-white" />
-          4. Mathematical Metric Definitions
+          Mathematical Metric Definitions
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div className="bg-neutral-950/60 p-4 rounded-xl border border-neutral-800 space-y-1.5">
-            <span className="font-medium text-white">Error Definition</span>
-            <div className="font-mono text-white mt-1">Error = Forecast - Actual (MW)</div>
-            <p className="text-[11px] text-neutral-400 font-light">Evaluated at target delivery half-hour / hour.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+          <div className="bg-black/40 p-3 rounded-xl border border-white/10 space-y-1">
+            <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">Error</span>
+            <div className="font-mono text-white text-xs">Forecast - Actual</div>
           </div>
-          <div className="bg-neutral-950/60 p-4 rounded-xl border border-neutral-800 space-y-1.5">
-            <span className="font-medium text-white">Mean Absolute Error (MAE)</span>
-            <div className="font-mono text-white mt-1">MAE = (1/N) &sum; |Error|</div>
-            <p className="text-[11px] text-neutral-400 font-light">Average magnitude of error across all delivery periods.</p>
+          <div className="bg-black/40 p-3 rounded-xl border border-white/10 space-y-1">
+            <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">MAE</span>
+            <div className="font-mono text-white text-xs">(1/N) &sum; |Error|</div>
           </div>
-          <div className="bg-neutral-950/60 p-4 rounded-xl border border-neutral-800 space-y-1.5">
-            <span className="font-medium text-white">Root Mean Squared Error (RMSE)</span>
-            <div className="font-mono text-white mt-1">RMSE = &radic;((1/N) &sum; Error&sup2;)</div>
-            <p className="text-[11px] text-neutral-400 font-light">Heavily penalizes large outlier deviations.</p>
+          <div className="bg-black/40 p-3 rounded-xl border border-white/10 space-y-1">
+            <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">RMSE</span>
+            <div className="font-mono text-white text-xs">&radic;((1/N) &sum; Error&sup2;)</div>
           </div>
-          <div className="bg-neutral-950/60 p-4 rounded-xl border border-neutral-800 space-y-1.5">
-            <span className="font-medium text-white">Normalized MAE (nMAE)</span>
-            <div className="font-mono text-white mt-1">nMAE = MAE / Mean(Actual)</div>
-            <p className="text-[11px] text-neutral-400 font-light">Percentage error relative to total outturn capacity (~18.4%).</p>
+          <div className="bg-black/40 p-3 rounded-xl border border-white/10 space-y-1">
+            <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">nMAE</span>
+            <div className="font-mono text-white text-xs">MAE / Mean(Actual)</div>
           </div>
-          <div className="bg-neutral-950/60 p-4 rounded-xl border border-neutral-800 space-y-1.5">
-            <span className="font-medium text-white">Forecast Bias</span>
-            <div className="font-mono text-white mt-1">Bias = (1/N) &sum; Error</div>
-            <p className="text-[11px] text-neutral-400 font-light">Systematic directional tendency (+1,851.53 MW in Jan 2026).</p>
+          <div className="bg-black/40 p-3 rounded-xl border border-white/10 space-y-1">
+            <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">Bias</span>
+            <div className="font-mono text-white text-xs">(1/N) &sum; Error</div>
           </div>
-          <div className="bg-neutral-950/60 p-4 rounded-xl border border-neutral-800 space-y-1.5">
-            <span className="font-medium text-white">Safety Buffer Sizing</span>
-            <div className="font-mono text-white mt-1">Buffer(q, h) = Quantile_q(max(Error, 0))</div>
-            <p className="text-[11px] text-neutral-400 font-light">Non-negative shortfall quantile sized per hour-of-day.</p>
+          <div className="bg-black/40 p-3 rounded-xl border border-white/10 space-y-1">
+            <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">Buffer(q, h)</span>
+            <div className="font-mono text-white text-xs">Quantile_q(max(E, 0))</div>
           </div>
         </div>
       </div>
 
-      {/* Data Pipeline Reference */}
-      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm shadow-sm space-y-4">
-        <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-2.5">
+      {/* Data Ingestion Pipeline Specifications */}
+      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl space-y-3">
+        <h3 className="text-xs sm:text-sm font-semibold text-white tracking-tight flex items-center gap-2">
           <Database className="w-4 h-4 text-white" />
-          5. Data Source & Validation Specifications
+          Ingested National Streams
         </h3>
-        <p className="text-xs text-neutral-300 leading-relaxed font-light">
-          Ingested directly from Elexon BMRS national stream APIs:
-        </p>
-        <ul className="list-disc list-inside text-xs text-neutral-300 space-y-2 pl-2 font-light">
-          <li>
-            <strong className="text-white font-medium">FUELHH (Actuals):</strong> Fuel-half-hourly outturn filtered for <code className="text-neutral-200 bg-neutral-800/80 px-1.5 py-0.5 rounded font-mono">fuelType == "WIND"</code>. Exactly <strong>1,488 half-hours</strong> covering 100% of January 2026 with zero missing periods.
-          </li>
-          <li>
-            <strong className="text-white font-medium">WINDFOR (Forecasts):</strong> National wind generation forecasts published between <strong>December 15, 2025 and February 1, 2026</strong>. 18,080 forecast updates covering all 744 January delivery hours.
-          </li>
-        </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <div className="bg-black/40 border border-white/10 rounded-xl p-3.5 space-y-1">
+            <span className="font-semibold text-white">FUELHH (Actuals)</span>
+            <p className="text-neutral-400 text-[11px] font-light">
+              1,488 half-hours covering 100% of January 2026. Zero missing periods.
+            </p>
+          </div>
+          <div className="bg-black/40 border border-white/10 rounded-xl p-3.5 space-y-1">
+            <span className="font-semibold text-white">WINDFOR (Forecasts)</span>
+            <p className="text-neutral-400 text-[11px] font-light">
+              18,080 forecast revisions from Dec 15, 2025 to Feb 1, 2026.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

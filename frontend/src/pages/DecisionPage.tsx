@@ -34,13 +34,13 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
   if (isLoading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-28 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl" />
+        <div className="h-20 bg-black/30 border border-white/10 rounded-2xl backdrop-blur-xl" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-32 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl" />
+            <div key={i} className="h-28 bg-black/30 border border-white/10 rounded-2xl backdrop-blur-xl" />
           ))}
         </div>
-        <div className="h-96 bg-neutral-900/60 border border-neutral-800/80 rounded-2xl" />
+        <div className="h-80 bg-black/30 border border-white/10 rounded-2xl backdrop-blur-xl" />
       </div>
     );
   }
@@ -54,7 +54,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
     );
   }
 
-  const { points, summary, deadlineLocal, deadlineUtc } = data;
+  const { points, summary, deadlineLocal } = data;
 
   // Format Recharts data
   const chartData = points.map((p: SeriesPoint) => ({
@@ -69,28 +69,21 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner Context Card */}
-      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20">
-                Decision Snapshot
-              </span>
-              <h2 className="text-xl font-light text-white tracking-tight">
-                Delivery Day: <span className="font-normal">{new Date(day).toLocaleDateString("en-GB", { dateStyle: "full" })}</span>
-              </h2>
-            </div>
-            <p className="text-xs text-neutral-400 mt-1 font-light">
-              Forecasts strictly frozen at gate closure on D-1. No post-deadline data lookahead is permitted.
-            </p>
+      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15">
+              Decision Snapshot
+            </span>
+            <h2 className="text-base sm:text-lg font-light text-white tracking-tight">
+              Delivery: <span className="font-semibold text-white">{new Date(day).toLocaleDateString("en-GB", { dateStyle: "medium" })}</span>
+            </h2>
           </div>
-          <div className="flex items-center gap-2 bg-neutral-950 px-4 py-2 rounded-full border border-neutral-800">
-            <Clock className="w-4 h-4 text-white shrink-0" />
-            <div className="text-xs">
-              <span className="text-neutral-400 font-light">Decision Freeze: </span>
-              <span className="font-medium text-white">{deadlineLocal}</span>
-              <span className="text-neutral-500 ml-1">({new Date(deadlineUtc).toISOString().slice(11, 16)} UTC)</span>
-            </div>
+          <div className="flex items-center gap-2 bg-black/40 px-3.5 py-1.5 rounded-full border border-white/15">
+            <Clock className="w-3.5 h-3.5 text-white opacity-80" />
+            <span className="text-xs text-neutral-300 font-light">
+              Freeze: <strong className="text-white font-medium">{deadlineLocal}</strong>
+            </span>
           </div>
         </div>
       </div>
@@ -98,56 +91,49 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <MetricCard
-          label="Mean Expected Power"
+          label="Mean Power"
           value={formatPower(summary.meanForecastMw, unit)}
           badge="Average"
-          badgeColor="blue"
-          subValue={`Day total: ${formatPower(summary.totalEnergyMwh, unit, false)} ${unit === "MW" ? "MWh" : "GWh"}`}
+          subValue={`24h: ${formatPower(summary.totalEnergyMwh, unit, false)} ${unit === "MW" ? "MWh" : "GWh"}`}
           icon={<Zap className="w-4 h-4 text-white" />}
         />
         <MetricCard
-          label="Peak Generation Output"
+          label="Peak Generation"
           value={formatPower(summary.maxForecastMw, unit)}
-          badge="Peak"
-          badgeColor="emerald"
-          subValue="Maximum hourly wind production"
+          badge="Max"
+          subValue="Maximum production peak"
           icon={<TrendingUp className="w-4 h-4 text-white" />}
         />
         <MetricCard
-          label="Minimum Trough Output"
+          label="Minimum Trough"
           value={formatPower(summary.minForecastMw, unit)}
-          badge="Trough"
-          badgeColor="slate"
-          subValue="Minimum hourly generation base"
+          badge="Min"
+          subValue="Baseload generation floor"
           icon={<TrendingDown className="w-4 h-4 text-white" />}
         />
         <MetricCard
-          label="Decision Lead Time"
-          value="~15h - 39h"
-          badge="Auction Gate"
-          badgeColor="amber"
-          subValue="Time between D-1 09:00 and delivery hours"
+          label="Auction Horizon"
+          value="15h - 39h"
+          badge="D-1 Gate"
+          subValue="Lead time to delivery"
           icon={<Clock className="w-4 h-4 text-white" />}
         />
       </div>
 
       {/* Main Intraday Profile Chart */}
-      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div>
-            <h3 className="text-base font-semibold text-white tracking-tight">
-              24-Hour Wind Profile: Decision Forecast vs Outturn Actuals
+            <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
+              24-Hour Wind Profile ({unit})
             </h3>
-            <p className="text-xs text-neutral-400 mt-0.5 font-light">
-              Hourly comparison for power purchase decisions (values in {unit})
-            </p>
           </div>
-          <div className="flex items-center gap-5 text-xs font-medium">
+          <div className="flex items-center gap-4 text-xs font-medium">
             <span className="flex items-center gap-1.5 text-white">
               <span className="w-3 h-1 bg-white rounded" /> Decision Forecast
             </span>
             <span className="flex items-center gap-1.5 text-neutral-400">
-              <span className="w-3 h-1 bg-neutral-400 rounded" /> Outturn Actual (FUELHH)
+              <span className="w-3 h-1 bg-neutral-400 rounded" /> Outturn Actual
             </span>
           </div>
         </div>
@@ -163,29 +149,26 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
                   if (active && payload && payload.length) {
                     const row = payload[0].payload;
                     return (
-                      <div className="bg-neutral-950 border border-neutral-800 p-3.5 rounded-xl shadow-xl text-xs space-y-1.5 min-w-[200px]">
-                        <div className="font-semibold text-white border-b border-neutral-800 pb-1">
-                          Delivery Time: {label} UTC
+                      <div className="bg-neutral-950/95 border border-white/15 p-3 rounded-xl shadow-2xl text-xs space-y-1 min-w-[180px] backdrop-blur-md">
+                        <div className="font-semibold text-white border-b border-white/10 pb-1">
+                          Delivery: {label} UTC
                         </div>
-                        <div className="flex justify-between text-white font-medium">
-                          <span>Decision Forecast:</span>
-                          <span>{row.forecast} {unit}</span>
+                        <div className="flex justify-between text-white">
+                          <span>Forecast:</span>
+                          <span className="font-semibold">{row.forecast} {unit}</span>
                         </div>
                         {row.actual !== null && (
                           <div className="flex justify-between text-neutral-300">
-                            <span>Outturn Actual:</span>
+                            <span>Actual:</span>
                             <span>{row.actual} {unit}</span>
                           </div>
                         )}
                         {row.error !== null && (
-                          <div className="flex justify-between text-white border-t border-neutral-800/80 pt-1">
+                          <div className="flex justify-between text-white border-t border-white/10 pt-1">
                             <span>Deviation:</span>
                             <span>{row.error > 0 ? `+${row.error}` : row.error} {unit}</span>
                           </div>
                         )}
-                        <div className="text-neutral-500 text-[11px] font-light">
-                          Horizon: {row.horizon}h lead time
-                        </div>
                       </div>
                     );
                   }
@@ -215,60 +198,55 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
       </div>
 
       {/* Hourly Data Table */}
-      <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl overflow-hidden backdrop-blur-sm">
-        <div className="p-5 border-b border-neutral-800 flex items-center justify-between">
-          <div>
-            <h3 className="text-base font-semibold text-white tracking-tight">
-              Hourly Forecasts & Actuals Schedule
-            </h3>
-            <p className="text-xs text-neutral-400 mt-0.5 font-light">
-              24 hourly delivery settlement windows for {day}
-            </p>
-          </div>
+      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-xl">
+        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between">
+          <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
+            Hourly Schedule ({day})
+          </h3>
           <span className="text-xs text-neutral-400 font-mono">
-            Values in {unit}
+            {unit}
           </span>
         </div>
 
         <div className="overflow-x-auto max-h-96 overflow-y-auto">
           <table className="w-full text-left text-xs text-neutral-300">
-            <thead className="bg-neutral-950 text-neutral-400 sticky top-0 border-b border-neutral-800 font-medium">
+            <thead className="bg-neutral-950/80 text-neutral-400 sticky top-0 border-b border-white/10 font-medium backdrop-blur-md">
               <tr>
-                <th className="py-3 px-4">Delivery Time (UTC)</th>
-                <th className="py-3 px-4">Decision Forecast</th>
-                <th className="py-3 px-4">Actual Outturn</th>
-                <th className="py-3 px-4">Error / Deviation</th>
-                <th className="py-3 px-4">Publish Timestamp</th>
-                <th className="py-3 px-4">Lead Time</th>
+                <th className="py-2.5 px-4">Time (UTC)</th>
+                <th className="py-2.5 px-4">Forecast</th>
+                <th className="py-2.5 px-4">Actual</th>
+                <th className="py-2.5 px-4">Deviation</th>
+                <th className="py-2.5 px-4">Published</th>
+                <th className="py-2.5 px-4">Horizon</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-800/70">
+            <tbody className="divide-y divide-white/5">
               {points.map((p: SeriesPoint, idx: number) => {
                 const isOver = p.error !== null && p.error > 0;
                 return (
-                  <tr key={idx} className="hover:bg-neutral-850/50 transition-colors">
-                    <td className="py-3 px-4 font-mono font-medium text-white">
-                      {new Date(p.startTime).toISOString().slice(11, 16)} UTC
+                  <tr key={idx} className="hover:bg-white/5 transition-colors">
+                    <td className="py-2.5 px-4 font-mono font-medium text-white">
+                      {new Date(p.startTime).toISOString().slice(11, 16)}
                     </td>
-                    <td className="py-3 px-4 font-semibold text-white">
+                    <td className="py-2.5 px-4 font-semibold text-white">
                       {formatPower(p.forecast, unit, false)}
                     </td>
-                    <td className="py-3 px-4 text-white font-medium">
+                    <td className="py-2.5 px-4 text-white font-medium">
                       {p.actual !== null ? formatPower(p.actual, unit, false) : "-"}
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-2.5 px-4">
                       {p.error !== null ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-neutral-800 text-white border border-neutral-700">
-                          {isOver ? `+${formatPower(p.error, unit, false)} (Shortfall)` : `${formatPower(p.error, unit, false)} (Surplus)`}
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/10 text-white border border-white/15">
+                          {isOver ? `+${formatPower(p.error, unit, false)} Short` : `${formatPower(p.error, unit, false)} Surplus`}
                         </span>
                       ) : (
                         "-"
                       )}
                     </td>
-                    <td className="py-3 px-4 text-neutral-400 font-mono">
-                      {new Date(p.publishTime).toISOString().slice(11, 16)} UTC
+                    <td className="py-2.5 px-4 text-neutral-400 font-mono">
+                      {new Date(p.publishTime).toISOString().slice(11, 16)}
                     </td>
-                    <td className="py-3 px-4 text-neutral-300 font-medium">
+                    <td className="py-2.5 px-4 text-neutral-300">
                       {p.horizonHours}h
                     </td>
                   </tr>

@@ -8,4 +8,19 @@ services:
     environment:
       - PORT=8000
       - STATIC_DIR=/app/static
+      - MONGO_URI=mongodb://mongo:27017/wind_portal
+    depends_on:
+      - mongo
     restart: unless-stopped
+
+  mongo:
+    image: mongo:6.0
+    container_name: wind_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo_data:

@@ -14,35 +14,26 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   value,
   subValue,
   badge,
-  badgeColor = "slate",
   icon,
 }) => {
-  const badgeClasses = {
-    blue: "bg-white/10 text-white border-white/20",
-    amber: "bg-neutral-800/80 text-white border-neutral-700",
-    emerald: "bg-neutral-800/80 text-white border-neutral-700",
-    rose: "bg-neutral-800/80 text-white border-neutral-700",
-    slate: "bg-neutral-800/80 text-white border-neutral-700",
-  }[badgeColor];
-
   return (
-    <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm hover:border-neutral-700 transition-all">
+    <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl hover:border-white/20 transition-all group">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-neutral-400 font-medium">{label}</span>
-        {icon && <span className="text-white opacity-80">{icon}</span>}
+        <span className="text-[11px] sm:text-xs text-neutral-400 font-medium tracking-wide uppercase">
+          {label}
+        </span>
+        {icon && <span className="text-white opacity-80 group-hover:opacity-100 transition-opacity">{icon}</span>}
       </div>
       <div className="flex items-baseline justify-between gap-2">
-        <div className="text-3xl font-light tracking-tight text-white">{value}</div>
+        <div className="text-2xl sm:text-3xl font-light tracking-tight text-white">{value}</div>
         {badge && (
-          <span
-            className={`text-[11px] px-2.5 py-0.5 rounded-full border font-medium ${badgeClasses}`}
-          >
+          <span className="text-[10px] px-2.5 py-0.5 rounded-full border border-white/15 bg-white/10 text-white font-medium">
             {badge}
           </span>
         )}
       </div>
       {subValue && (
-        <div className="mt-1 text-xs text-neutral-400 line-clamp-1 font-light">{subValue}</div>
+        <div className="mt-1.5 text-[11px] text-neutral-400 font-light truncate">{subValue}</div>
       )}
     </div>
   );

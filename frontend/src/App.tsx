@@ -37,12 +37,19 @@ export const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b09] text-white flex flex-col font-sans selection:bg-neutral-700 selection:text-white bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(20,45,30,0.25),rgba(7,11,9,0.98)_75%)]">
+    <div className="min-h-screen bg-[#070b09] text-white flex flex-col font-sans selection:bg-neutral-700 selection:text-white relative overflow-x-hidden">
+      {/* Atmospheric Background Gradients & Glows (matching landing page aesthetic) */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[700px] bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(34,70,50,0.30),rgba(7,11,9,0)_75%)]" />
+        <div className="absolute top-[25%] -right-40 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(25,60,40,0.15),transparent_70%)] blur-3xl" />
+        <div className="absolute top-[55%] -left-40 w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(20,50,35,0.12),transparent_70%)] blur-3xl" />
+      </div>
+
       {/* Unified Global Header (Persistent across all pages) */}
       <Header unit={unit} onUnitToggle={handleUnitToggle} />
 
       {/* Multi-Page Routes */}
-      <main className="flex-1 w-full">
+      <main className="flex-1 w-full relative z-10">
         <Routes>
           {/* Landing / Overview Page */}
           <Route path="/" element={<LandingPage unit={unit} />} />
