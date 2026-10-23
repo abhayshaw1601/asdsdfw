@@ -1,29 +1,23 @@
 import React from "react";
+import { NavLink, Link } from "react-router-dom";
 import { Zap } from "lucide-react";
-import { NAV_ITEMS, type NavTab } from "./navigation";
+import { NAV_ITEMS } from "./navigation";
 import type { UnitType } from "../api/types";
 
 interface HeaderProps {
-  activeTab: NavTab;
-  onTabChange: (tab: NavTab) => void;
   unit: UnitType;
   onUnitToggle: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  activeTab,
-  onTabChange,
-  unit,
-  onUnitToggle,
-}) => {
+export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
   return (
-    <header className="border-b border-neutral-800/80 bg-[#070b09]/95 sticky top-0 z-40 backdrop-blur-md">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#070b09]/85 border-b border-white/10 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo & Identity matching landing page */}
-          <button
-            onClick={() => onTabChange("overview")}
-            className="flex items-center gap-3 text-left focus:outline-none group"
+        <div className="flex items-center justify-between h-18 sm:h-20 gap-4">
+          {/* Brand Identity / Logo */}
+          <Link
+            to="/"
+            className="flex items-center gap-3 text-left focus:outline-none group shrink-0"
           >
             <div className="flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
               <svg
@@ -38,26 +32,46 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-white tracking-tight text-base sm:text-lg">
-                  Wind Forecast Decision Portal
+                <span className="font-semibold text-white tracking-tight text-sm sm:text-base">
+                  Wind Forecast Portal
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-neutral-800 text-white border border-neutral-700">
+                <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-white/10 text-white border border-white/15">
                   <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                  Elexon BMRS 2026
+                  Elexon 2026
                 </span>
               </div>
-              <p className="text-xs text-neutral-400 hidden sm:block font-light">
-                Day-ahead power procurement & shortfall buffer sizing
+              <p className="text-[11px] text-neutral-400 hidden lg:block font-light">
+                UK Day-Ahead Energy Decision System
               </p>
             </div>
-          </button>
+          </Link>
+
+          {/* Central Navigation Pills */}
+          <nav className="flex items-center gap-1 bg-neutral-900/60 border border-neutral-800/80 p-1 rounded-full backdrop-blur-md overflow-x-auto no-scrollbar">
+            {NAV_ITEMS.map((item) => (
+              <NavLink
+                key={item.id}
+                to={item.path}
+                end={item.path === "/"}
+                className={({ isActive }) =>
+                  `px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
+                    isActive
+                      ? "bg-white text-neutral-950 font-semibold shadow-sm"
+                      : "text-neutral-300 hover:text-white hover:bg-white/10"
+                  }`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
 
           {/* Right Controls: Unit Toggle */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 shrink-0">
             <button
               onClick={onUnitToggle}
               title={`Switch unit to ${unit === "MW" ? "GW" : "MW"}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-700/80 rounded-full text-xs font-semibold text-white transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-neutral-900/80 hover:bg-neutral-800 border border-neutral-700/80 rounded-full text-xs font-semibold text-white transition-colors shadow-sm"
             >
               <Zap className="w-3.5 h-3.5 text-white opacity-80" />
               <span className="text-neutral-400 font-light">Unit:</span>
@@ -65,26 +79,6 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
         </div>
-
-        {/* Navigation Tabs */}
-        <nav className="flex space-x-1 sm:space-x-2 border-t border-neutral-850/80 pt-1.5 pb-2.5 overflow-x-auto no-scrollbar">
-          {NAV_ITEMS.map((item) => {
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => onTabChange(item.id)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                  isActive
-                    ? "bg-white text-black font-semibold shadow-sm shadow-white/10"
-                    : "text-neutral-400 hover:text-white hover:bg-neutral-900"
-                }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </nav>
       </div>
     </header>
   );

@@ -39,8 +39,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const isDecisionView = activeTab === "decision";
 
   return (
-    <div className="bg-[#070b09]/95 border-b border-neutral-800/80 py-3 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+    <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl backdrop-blur-md p-4 mb-6 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         {/* Date Selector(s) */}
         <div className="flex flex-wrap items-center gap-3">
           {isDecisionView ? (
@@ -64,7 +64,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 max="2026-01-31"
                 value={selectedDay}
                 onChange={(e) => onDayChange(e.target.value)}
-                className="bg-neutral-900 border border-neutral-700/80 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium"
+                className="bg-neutral-900 border border-neutral-700/80 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer"
               />
               <button
                 onClick={() => handleDayStep(1)}
@@ -88,7 +88,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 max="2026-01-31"
                 value={startDate}
                 onChange={(e) => onDateRangeChange(e.target.value, endDate)}
-                className="bg-neutral-900 border border-neutral-700/80 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium"
+                className="bg-neutral-900 border border-neutral-700/80 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer"
               />
               <span className="text-xs text-neutral-500 font-light">to</span>
               <input
@@ -97,7 +97,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 max="2026-01-31"
                 value={endDate}
                 onChange={(e) => onDateRangeChange(startDate, e.target.value)}
-                className="bg-neutral-900 border border-neutral-700/80 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium"
+                className="bg-neutral-900 border border-neutral-700/80 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer"
               />
 
               {/* Quick Preset Buttons */}

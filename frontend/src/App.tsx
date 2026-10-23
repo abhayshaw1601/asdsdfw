@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Header } from "./components/Header";
 import { FilterBar } from "./components/FilterBar";
-import { type NavTab } from "./components/navigation";
 import { LandingPage } from "./pages/LandingPage";
 import { DecisionPage } from "./pages/DecisionPage";
 import { AccuracyPage } from "./pages/AccuracyPage";
@@ -21,7 +21,6 @@ const queryClient = new QueryClient({
 });
 
 export const AppContent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<NavTab>("overview");
   const [selectedDay, setSelectedDay] = useState<string>("2026-01-15");
   const [startDate, setStartDate] = useState<string>("2026-01-01");
   const [endDate, setEndDate] = useState<string>("2026-01-31");
@@ -38,76 +37,131 @@ export const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b09] text-white flex flex-col font-sans selection:bg-neutral-700 selection:text-white">
-      {/* Top Header (shown on analytical/decision pages) */}
-      {activeTab !== "overview" && (
-        <Header
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          unit={unit}
-          onUnitToggle={handleUnitToggle}
-        />
-      )}
+    <div className="min-h-screen bg-[#070b09] text-white flex flex-col font-sans selection:bg-neutral-700 selection:text-white bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(20,45,30,0.25),rgba(7,11,9,0.98)_75%)]">
+      {/* Unified Global Header (Persistent across all pages) */}
+      <Header unit={unit} onUnitToggle={handleUnitToggle} />
 
-      {/* Sticky Filter Bar (shown on analytical/decision pages) */}
-      {activeTab !== "overview" && activeTab !== "methodology" && (
-        <FilterBar
-          activeTab={activeTab}
-          selectedDay={selectedDay}
-          onDayChange={setSelectedDay}
-          startDate={startDate}
-          endDate={endDate}
-          onDateRangeChange={handleDateRangeChange}
-          deadlineHour={deadlineHour}
-          onDeadlineHourChange={setDeadlineHour}
-        />
-      )}
+      {/* Multi-Page Routes */}
+      <main className="flex-1 w-full">
+        <Routes>
+          {/* Landing / Overview Page */}
+          <Route path="/" element={<LandingPage unit={unit} />} />
 
-      {/* Main Content Area */}
-      <main className={`flex-1 w-full ${activeTab === "overview" ? "" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"}`}>
-        {activeTab === "overview" && (
-          <LandingPage onNavigate={setActiveTab} unit={unit} />
-        )}
-        {activeTab === "decision" && (
-          <DecisionPage day={selectedDay} deadlineHour={deadlineHour} unit={unit} />
-        )}
-        {activeTab === "accuracy" && (
-          <AccuracyPage
-            startDate={startDate}
-            endDate={endDate}
-            deadlineHour={deadlineHour}
-            unit={unit}
+          {/* Decision Engine Page */}
+          <Route
+            path="/decision"
+            element={
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <FilterBar
+                  activeTab="decision"
+                  selectedDay={selectedDay}
+                  onDayChange={setSelectedDay}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onDateRangeChange={handleDateRangeChange}
+                  deadlineHour={deadlineHour}
+                  onDeadlineHourChange={setDeadlineHour}
+                />
+                <DecisionPage day={selectedDay} deadlineHour={deadlineHour} unit={unit} />
+              </div>
+            }
           />
-        )}
-        {activeTab === "horizon" && (
-          <HorizonPage deadlineHour={deadlineHour} unit={unit} />
-        )}
-        {activeTab === "buffer" && (
-          <BufferPage
-            startDate={startDate}
-            endDate={endDate}
-            deadlineHour={deadlineHour}
-            unit={unit}
+
+          {/* Accuracy & Diagnostics Page */}
+          <Route
+            path="/accuracy"
+            element={
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <FilterBar
+                  activeTab="accuracy"
+                  selectedDay={selectedDay}
+                  onDayChange={setSelectedDay}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onDateRangeChange={handleDateRangeChange}
+                  deadlineHour={deadlineHour}
+                  onDeadlineHourChange={setDeadlineHour}
+                />
+                <AccuracyPage
+                  startDate={startDate}
+                  endDate={endDate}
+                  deadlineHour={deadlineHour}
+                  unit={unit}
+                />
+              </div>
+            }
           />
-        )}
-        {activeTab === "methodology" && <MethodologyPage />}
+
+          {/* Horizon Degradation Page */}
+          <Route
+            path="/horizon"
+            element={
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <FilterBar
+                  activeTab="horizon"
+                  selectedDay={selectedDay}
+                  onDayChange={setSelectedDay}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onDateRangeChange={handleDateRangeChange}
+                  deadlineHour={deadlineHour}
+                  onDeadlineHourChange={setDeadlineHour}
+                />
+                <HorizonPage deadlineHour={deadlineHour} unit={unit} />
+              </div>
+            }
+          />
+
+          {/* Safety Buffers Page */}
+          <Route
+            path="/buffer"
+            element={
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <FilterBar
+                  activeTab="buffer"
+                  selectedDay={selectedDay}
+                  onDayChange={setSelectedDay}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onDateRangeChange={handleDateRangeChange}
+                  deadlineHour={deadlineHour}
+                  onDeadlineHourChange={setDeadlineHour}
+                />
+                <BufferPage
+                  startDate={startDate}
+                  endDate={endDate}
+                  deadlineHour={deadlineHour}
+                  unit={unit}
+                />
+              </div>
+            }
+          />
+
+          {/* Methodology Page */}
+          <Route
+            path="/methodology"
+            element={
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <MethodologyPage />
+              </div>
+            }
+          />
+
+          {/* Fallback to Home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-neutral-800 bg-[#070b09] py-6 text-xs text-neutral-400">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Unified Global Footer */}
+      <footer className="border-t border-neutral-800 bg-[#070b09]/90 py-8 text-xs text-neutral-400 mt-12 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             Wind Forecast Decision Portal | Built for UK Day-Ahead Electricity Buying
           </div>
-          <div className="flex items-center gap-4 text-neutral-300">
-            <span>Elexon BMRS Datasets (FUELHH & WINDFOR)</span>
-            <span>|</span>
-            <button
-              onClick={() => setActiveTab("methodology")}
-              className="hover:text-white transition-colors"
-            >
-              Methodology & Docs
-            </button>
+          <div className="flex items-center gap-6 text-neutral-400">
+            <span>Elexon BMRS Verified</span>
+            <span>Europe/London DST Handled</span>
+            <span>Jan 2026 Dataset</span>
           </div>
         </div>
       </footer>
@@ -118,7 +172,9 @@ export const AppContent: React.FC = () => {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppContent />
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }
