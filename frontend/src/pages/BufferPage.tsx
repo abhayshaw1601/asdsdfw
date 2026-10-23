@@ -73,10 +73,11 @@ export const BufferPage: React.FC<BufferPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner with Policy Toggle */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-4 sm:p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)]">
               Quantile Hedging
             </span>
             <h2 className="text-base sm:text-lg font-light text-white tracking-tight">
@@ -85,23 +86,23 @@ export const BufferPage: React.FC<BufferPageProps> = ({
           </div>
 
           {/* Confidence Selector Buttons */}
-          <div className="flex items-center gap-1.5 bg-black/40 p-1 rounded-full border border-white/15">
+          <div className="flex items-center gap-1.5 bg-white/[0.08] p-1 rounded-full border border-white/20 backdrop-blur-md">
             <button
               onClick={() => setSelectedConfidence(0.90)}
-              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+              className={`px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
                 selectedConfidence === 0.90
                   ? "bg-white text-neutral-950 font-semibold shadow-sm"
-                  : "text-neutral-400 hover:text-white"
+                  : "text-neutral-300 hover:text-white"
               }`}
             >
               P90 (90%)
             </button>
             <button
               onClick={() => setSelectedConfidence(0.95)}
-              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+              className={`px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
                 selectedConfidence === 0.95
                   ? "bg-white text-neutral-950 font-semibold shadow-sm"
-                  : "text-neutral-400 hover:text-white"
+                  : "text-neutral-300 hover:text-white"
               }`}
             >
               P95 (95%)
@@ -143,7 +144,8 @@ export const BufferPage: React.FC<BufferPageProps> = ({
       </div>
 
       {/* 24-Hour Buffer Sizing Chart */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-5 sm:p-6 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
             Procurement Buffer by Hour ({unit})
@@ -203,18 +205,19 @@ export const BufferPage: React.FC<BufferPageProps> = ({
       </div>
 
       {/* Hourly Buffer Table */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-xl">
-        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
+        <div className="p-4 sm:p-5 border-b border-white/15 flex items-center justify-between">
           <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
             Hourly Buffer Sizing Guidance
           </h3>
-          <span className="text-xs text-neutral-400 font-mono">
+          <span className="text-xs text-neutral-300 font-mono">
             Target: P{(selectedConfidence * 100).toFixed(0)} ({unit})
           </span>
         </div>
         <div className="overflow-x-auto max-h-80 overflow-y-auto">
           <table className="w-full text-left text-xs text-neutral-300">
-            <thead className="bg-neutral-950/80 text-neutral-400 sticky top-0 border-b border-white/10 font-medium backdrop-blur-md">
+            <thead className="bg-white/[0.05] text-neutral-300 sticky top-0 border-b border-white/15 font-medium backdrop-blur-md">
               <tr>
                 <th className="py-2.5 px-4">Hour</th>
                 <th className="py-2.5 px-4">Buffer ({unit})</th>

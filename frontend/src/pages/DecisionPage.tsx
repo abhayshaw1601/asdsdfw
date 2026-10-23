@@ -69,17 +69,18 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner Context Card */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-4 sm:p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)]">
               Decision Snapshot
             </span>
             <h2 className="text-base sm:text-lg font-light text-white tracking-tight">
               Delivery: <span className="font-semibold text-white">{new Date(day).toLocaleDateString("en-GB", { dateStyle: "medium" })}</span>
             </h2>
           </div>
-          <div className="flex items-center gap-2 bg-black/40 px-3.5 py-1.5 rounded-full border border-white/15">
+          <div className="flex items-center gap-2 bg-white/[0.08] px-3.5 py-1.5 rounded-full border border-white/20 backdrop-blur-md">
             <Clock className="w-3.5 h-3.5 text-white opacity-80" />
             <span className="text-xs text-neutral-300 font-light">
               Freeze: <strong className="text-white font-medium">{deadlineLocal}</strong>
@@ -121,7 +122,8 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
       </div>
 
       {/* Main Intraday Profile Chart */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-5 sm:p-6 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div>
             <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
@@ -198,19 +200,20 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
       </div>
 
       {/* Hourly Data Table */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-xl">
-        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
+        <div className="p-4 sm:p-5 border-b border-white/15 flex items-center justify-between">
           <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
             Hourly Schedule ({day})
           </h3>
-          <span className="text-xs text-neutral-400 font-mono">
+          <span className="text-xs text-neutral-300 font-mono">
             {unit}
           </span>
         </div>
 
         <div className="overflow-x-auto max-h-96 overflow-y-auto">
           <table className="w-full text-left text-xs text-neutral-300">
-            <thead className="bg-neutral-950/80 text-neutral-400 sticky top-0 border-b border-white/10 font-medium backdrop-blur-md">
+            <thead className="bg-white/[0.05] text-neutral-300 sticky top-0 border-b border-white/15 font-medium backdrop-blur-md">
               <tr>
                 <th className="py-2.5 px-4">Time (UTC)</th>
                 <th className="py-2.5 px-4">Forecast</th>

@@ -66,17 +66,18 @@ export const HorizonPage: React.FC<HorizonPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-4 sm:p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)]">
               Decay Engine
             </span>
             <h2 className="text-base sm:text-lg font-light text-white tracking-tight">
               Lead-Time Degradation Curve (0h &rarr; 72h)
             </h2>
           </div>
-          <span className="text-xs font-mono text-neutral-300 bg-black/40 px-3 py-1 rounded-full border border-white/15">
+          <span className="text-xs font-mono text-white bg-white/[0.08] px-3 py-1 rounded-full border border-white/20 backdrop-blur-md">
             Day-Ahead: 18-24h
           </span>
         </div>
@@ -84,32 +85,35 @@ export const HorizonPage: React.FC<HorizonPageProps> = ({
 
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-xl">
+        <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-neutral-400 uppercase tracking-wider font-medium">0-6h (Intraday)</span>
+            <span className="text-xs text-neutral-300 uppercase tracking-wider font-medium">0-6h (Intraday)</span>
             <Clock className="w-4 h-4 text-white opacity-80" />
           </div>
-          <div className="text-2xl sm:text-3xl font-light text-white">{baselineBin?.mae.toLocaleString()} <span className="text-sm text-neutral-400">{unit}</span></div>
-          <div className="mt-1 text-[11px] text-neutral-400 font-light">Short-term gate baseline</div>
+          <div className="text-2xl sm:text-3xl font-light text-white">{baselineBin?.mae.toLocaleString()} <span className="text-sm text-neutral-300">{unit}</span></div>
+          <div className="mt-1 text-[11px] text-neutral-300 font-light">Short-term gate baseline</div>
         </div>
 
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-xl">
+        <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-neutral-400 uppercase tracking-wider font-medium">18-24h (Auction Gate)</span>
+            <span className="text-xs text-neutral-300 uppercase tracking-wider font-medium">18-24h (Auction Gate)</span>
             <TrendingUp className="w-4 h-4 text-white opacity-80" />
           </div>
-          <div className="text-2xl sm:text-3xl font-light text-white">{dayAheadBin?.mae.toLocaleString()} <span className="text-sm text-neutral-400">{unit}</span></div>
+          <div className="text-2xl sm:text-3xl font-light text-white">{dayAheadBin?.mae.toLocaleString()} <span className="text-sm text-neutral-300">{unit}</span></div>
           <div className="mt-1 text-[11px] text-white font-medium">
             +{dayAheadDegPct}% decay vs intraday
           </div>
         </div>
 
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-xl">
+        <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-neutral-400 uppercase tracking-wider font-medium">48-72h (Medium Range)</span>
+            <span className="text-xs text-neutral-300 uppercase tracking-wider font-medium">48-72h (Medium Range)</span>
             <AlertTriangle className="w-4 h-4 text-white opacity-80" />
           </div>
-          <div className="text-2xl sm:text-3xl font-light text-white">{longRangeBin?.mae.toLocaleString()} <span className="text-sm text-neutral-400">{unit}</span></div>
+          <div className="text-2xl sm:text-3xl font-light text-white">{longRangeBin?.mae.toLocaleString()} <span className="text-sm text-neutral-300">{unit}</span></div>
           <div className="mt-1 text-[11px] text-white font-medium">
             +{longRangeDegPct}% decay vs intraday
           </div>
@@ -117,7 +121,8 @@ export const HorizonPage: React.FC<HorizonPageProps> = ({
       </div>
 
       {/* Degradation Chart */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-5 sm:p-6 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
             Error Growth by Horizon Bucket ({unit})
@@ -126,11 +131,11 @@ export const HorizonPage: React.FC<HorizonPageProps> = ({
             <span className="flex items-center gap-1.5 text-white">
               <span className="w-3 h-1 bg-white rounded" /> MAE
             </span>
-            <span className="flex items-center gap-1.5 text-neutral-400">
-              <span className="w-3 h-1 bg-neutral-400 rounded" /> RMSE
-            </span>
             <span className="flex items-center gap-1.5 text-neutral-300">
-              <span className="w-3 h-1 bg-neutral-300 rounded" /> Bias
+              <span className="w-3 h-1 bg-neutral-300 rounded" /> RMSE
+            </span>
+            <span className="flex items-center gap-1.5 text-neutral-200">
+              <span className="w-3 h-1 bg-neutral-200 rounded" /> Bias
             </span>
           </div>
         </div>
@@ -168,19 +173,20 @@ export const HorizonPage: React.FC<HorizonPageProps> = ({
       </div>
 
       {/* Degradation Breakdown Table */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-xl">
-        <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
+        <div className="p-4 sm:p-5 border-b border-white/15 flex items-center justify-between">
           <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
             Horizon Buckets Overview
           </h3>
-          <span className="text-xs text-neutral-400 font-mono">
+          <span className="text-xs text-neutral-300 font-mono">
             {unit}
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-neutral-300">
-            <thead className="bg-neutral-950/80 text-neutral-400 border-b border-white/10 font-medium backdrop-blur-md">
+            <thead className="bg-white/[0.05] text-neutral-300 border-b border-white/15 font-medium backdrop-blur-md">
               <tr>
                 <th className="py-2.5 px-4">Window</th>
                 <th className="py-2.5 px-4">Phase</th>

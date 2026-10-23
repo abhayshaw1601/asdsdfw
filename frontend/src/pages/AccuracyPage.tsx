@@ -98,17 +98,18 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 sm:p-5 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-4 sm:p-5 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15">
+            <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)]">
               Accuracy Metrics
             </span>
             <h2 className="text-base sm:text-lg font-light text-white tracking-tight">
-              Period: <span className="font-semibold">{startDate} &rarr; {endDate}</span>
+              Period: <span className="font-semibold text-white">{startDate} &rarr; {endDate}</span>
             </h2>
           </div>
-          <span className="text-xs font-mono text-neutral-300 bg-black/40 px-3 py-1 rounded-full border border-white/15">
+          <span className="text-xs font-mono text-white bg-white/[0.08] px-3 py-1 rounded-full border border-white/20 backdrop-blur-md">
             N = {summary.n.toLocaleString()} hours
           </span>
         </div>
@@ -147,7 +148,8 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
       </div>
 
       {/* Actual vs Forecast Time Series */}
-      <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-5 sm:p-6 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
             Actual vs Decision Forecast ({unit})
@@ -200,7 +202,8 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
       {/* Two Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Hourly Error Breakdown */}
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl">
+        <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-5 sm:p-6 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
           <div className="mb-4">
             <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight">
               Diurnal Error (00:00 - 23:00)
@@ -234,27 +237,28 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
         </div>
 
         {/* Quantile Summary */}
-        <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between">
+        <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-5 sm:p-6 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all flex flex-col justify-between">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
           <div>
             <h3 className="text-sm sm:text-base font-semibold text-white tracking-tight mb-4">
               Error Quantiles ({unit})
             </h3>
             <div className="grid grid-cols-3 gap-3">
-              <div className="p-4 rounded-xl bg-black/40 border border-white/10 text-center">
-                <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">P50 Median</span>
+              <div className="p-4 rounded-xl bg-white/[0.06] border border-white/15 text-center backdrop-blur-md">
+                <span className="text-[10px] text-neutral-300 uppercase tracking-wider font-light">P50 Median</span>
                 <div className="text-xl sm:text-2xl font-light text-white mt-1">{formatPower(summary.p50, unit, false)}</div>
               </div>
-              <div className="p-4 rounded-xl bg-black/40 border border-white/10 text-center">
-                <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">P90 Quantile</span>
+              <div className="p-4 rounded-xl bg-white/[0.06] border border-white/15 text-center backdrop-blur-md">
+                <span className="text-[10px] text-neutral-300 uppercase tracking-wider font-light">P90 Quantile</span>
                 <div className="text-xl sm:text-2xl font-light text-white mt-1">{formatPower(summary.p90, unit, false)}</div>
               </div>
-              <div className="p-4 rounded-xl bg-black/40 border border-white/10 text-center">
-                <span className="text-[10px] text-neutral-400 uppercase tracking-wider font-light">P95 Tail</span>
+              <div className="p-4 rounded-xl bg-white/[0.06] border border-white/15 text-center backdrop-blur-md">
+                <span className="text-[10px] text-neutral-300 uppercase tracking-wider font-light">P95 Tail</span>
                 <div className="text-xl sm:text-2xl font-light text-white mt-1">{formatPower(summary.p95, unit, false)}</div>
               </div>
             </div>
           </div>
-          <div className="mt-4 p-3 rounded-xl bg-black/40 border border-white/10 text-xs text-neutral-300 font-light">
+          <div className="mt-4 p-3 rounded-xl bg-white/[0.06] border border-white/15 text-xs text-neutral-200 font-light backdrop-blur-md">
             Systematic over-forecasting is observed across &gt;85% of intervals, confirming persistent shortfall risk.
           </div>
         </div>

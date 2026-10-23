@@ -38,11 +38,18 @@ export const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#070b09] text-white flex flex-col font-sans selection:bg-neutral-700 selection:text-white relative overflow-x-hidden">
-      {/* Atmospheric Background Gradients & Glows (matching landing page aesthetic) */}
+      {/* Rich Atmospheric Glows & Organic Lighting (enables true glassmorphic refraction) */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[700px] bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(34,70,50,0.30),rgba(7,11,9,0)_75%)]" />
-        <div className="absolute top-[25%] -right-40 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(25,60,40,0.15),transparent_70%)] blur-3xl" />
-        <div className="absolute top-[55%] -left-40 w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(20,50,35,0.12),transparent_70%)] blur-3xl" />
+        {/* Top ambient forest light */}
+        <div className="absolute -top-[10%] left-1/2 -translate-x-1/2 w-[1200px] h-[750px] bg-[radial-gradient(ellipse_at_center,rgba(40,95,65,0.40),rgba(15,45,30,0.18)_50%,transparent_75%)] blur-2xl" />
+        {/* Upper-left teal/moss orb */}
+        <div className="absolute top-[18%] left-[8%] w-[550px] h-[550px] rounded-full bg-[radial-gradient(circle,rgba(25,85,65,0.30),rgba(12,40,30,0.10)_55%,transparent_75%)] blur-3xl" />
+        {/* Upper-right emerald aura */}
+        <div className="absolute top-[28%] right-[5%] w-[650px] h-[650px] rounded-full bg-[radial-gradient(circle,rgba(35,90,70,0.28),rgba(15,45,35,0.08)_50%,transparent_75%)] blur-3xl" />
+        {/* Mid-lower ambient glow */}
+        <div className="absolute top-[60%] left-[20%] w-[800px] h-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(20,70,50,0.22),transparent_70%)] blur-3xl" />
+        {/* Subtle geometric grid texture */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,#000_65%,transparent_100%)] opacity-50" />
       </div>
 
       {/* Unified Global Header (Persistent across all pages) */}

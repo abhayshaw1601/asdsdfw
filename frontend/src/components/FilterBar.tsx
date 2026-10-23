@@ -38,21 +38,24 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const isDecisionView = activeTab === "decision";
 
   return (
-    <div className="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-3.5 sm:p-4 mb-6 shadow-xl">
+    <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-3.5 sm:p-4 mb-6 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
+      {/* Top specular highlight line */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         {/* Date Selector(s) */}
         <div className="flex flex-wrap items-center gap-2.5">
           {isDecisionView ? (
             /* Single Day Picker for Decision View */
             <div className="flex items-center gap-1.5">
-              <span className="text-xs font-medium text-neutral-400 flex items-center gap-1.5 mr-1">
+              <span className="text-xs font-medium text-neutral-300 flex items-center gap-1.5 mr-1">
                 <Calendar className="w-3.5 h-3.5 text-white opacity-80" />
                 Day:
               </span>
               <button
                 onClick={() => handleDayStep(-1)}
                 disabled={selectedDay <= "2026-01-01"}
-                className="p-1.5 rounded-full bg-black/40 hover:bg-black/60 border border-white/15 disabled:opacity-20 text-white transition-colors"
+                className="p-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 disabled:opacity-20 text-white transition-colors cursor-pointer"
                 title="Previous Day"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
@@ -63,12 +66,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 max="2026-01-31"
                 value={selectedDay}
                 onChange={(e) => onDayChange(e.target.value)}
-                className="bg-black/40 border border-white/15 hover:border-white/30 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white/60 font-medium cursor-pointer"
+                className="bg-white/[0.08] border border-white/20 hover:border-white/40 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer backdrop-blur-md"
               />
               <button
                 onClick={() => handleDayStep(1)}
                 disabled={selectedDay >= "2026-01-31"}
-                className="p-1.5 rounded-full bg-black/40 hover:bg-black/60 border border-white/15 disabled:opacity-20 text-white transition-colors"
+                className="p-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 disabled:opacity-20 text-white transition-colors cursor-pointer"
                 title="Next Day"
               >
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -77,7 +80,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           ) : (
             /* Date Range Pickers for Accuracy/Horizon/Buffer */
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-medium text-neutral-400 flex items-center gap-1.5 mr-1">
+              <span className="text-xs font-medium text-neutral-300 flex items-center gap-1.5 mr-1">
                 <Calendar className="w-3.5 h-3.5 text-white opacity-80" />
                 Range:
               </span>
@@ -87,16 +90,16 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 max="2026-01-31"
                 value={startDate}
                 onChange={(e) => onDateRangeChange(e.target.value, endDate)}
-                className="bg-black/40 border border-white/15 hover:border-white/30 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white/60 font-medium cursor-pointer"
+                className="bg-white/[0.08] border border-white/20 hover:border-white/40 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer backdrop-blur-md"
               />
-              <span className="text-xs text-neutral-500 font-light">&rarr;</span>
+              <span className="text-xs text-neutral-400 font-light">&rarr;</span>
               <input
                 type="date"
                 min="2026-01-01"
                 max="2026-01-31"
                 value={endDate}
                 onChange={(e) => onDateRangeChange(startDate, e.target.value)}
-                className="bg-black/40 border border-white/15 hover:border-white/30 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white/60 font-medium cursor-pointer"
+                className="bg-white/[0.08] border border-white/20 hover:border-white/40 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer backdrop-blur-md"
               />
 
               {/* Quick Preset Buttons */}
@@ -110,7 +113,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   <button
                     key={preset.label}
                     onClick={() => onDateRangeChange(preset.s, preset.e)}
-                    className="px-2.5 py-1 bg-black/40 hover:bg-black/60 border border-white/15 rounded-full text-[10px] text-neutral-300 hover:text-white font-medium transition-colors"
+                    className="px-2.5 py-1 bg-white/[0.08] hover:bg-white/[0.16] border border-white/20 rounded-full text-[10px] text-neutral-200 hover:text-white font-medium transition-colors cursor-pointer"
                   >
                     {preset.label}
                   </button>
@@ -122,14 +125,14 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
         {/* Decision Deadline Selector (Global) */}
         <div className="flex items-center gap-1.5">
-          <label className="text-xs font-medium text-neutral-400 flex items-center gap-1.5">
+          <label className="text-xs font-medium text-neutral-300 flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5 text-white opacity-80" />
             Freeze:
           </label>
           <select
             value={deadlineHour}
             onChange={(e) => onDeadlineHourChange(Number(e.target.value))}
-            className="bg-black/40 border border-white/15 hover:border-white/30 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white/60 font-medium cursor-pointer"
+            className="bg-white/[0.08] border border-white/20 hover:border-white/40 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer backdrop-blur-md"
           >
             {Array.from({ length: 24 }).map((_, h) => (
               <option key={h} value={h} className="bg-neutral-950 text-white">
