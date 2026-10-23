@@ -1,3 +1,7 @@
+"""Vercel Serverless Function adapter.
+Routes incoming serverless HTTP requests to backend.app.main:app.
+"""
+
 import sys
 from pathlib import Path
 

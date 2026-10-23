@@ -15,9 +15,8 @@ WORKDIR /app
 COPY backend/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend application, data snapshots, and static frontend dist
+# Copy self-contained backend (including backend/data) and static frontend dist
 COPY backend/ ./backend/
-COPY data/ ./data/
 COPY --from=frontend-builder /app/frontend/dist /app/static
 
 ENV STATIC_DIR=/app/static
