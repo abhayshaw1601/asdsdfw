@@ -1,0 +1,17 @@
+.git
+.agents
+.venv
+venv
+**/node_modules
+**/dist
+**/__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+notebooks
+plan.md
+PRD.md
+prd.md
+*REint*.md
+HLD.md
+LLD.md
