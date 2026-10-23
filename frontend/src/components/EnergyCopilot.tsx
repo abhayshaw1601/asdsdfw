@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { X, Send, Bot, User, Sparkles, AlertCircle } from "lucide-react";
+import { X, Send, Bot, User, Sparkles, AlertCircle, RotateCcw, Copy, Check } from "lucide-react";
 import type { UnitType } from "../api/types";
 
 interface Message {
@@ -35,10 +35,28 @@ export const EnergyCopilot: React.FC<EnergyCopilotProps> = ({
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const token = localStorage.getItem("auth_token");
   const isAuthenticated = Boolean(token);
+
+  const handleReset = () => {
+    setMessages([
+      {
+        role: "assistant",
+        content:
+          "Welcome to the **Energy AI Copilot**. I am grounded in live Elexon wind generation, auction freeze cutoffs, and thermal procurement calculations. Ask me anything about day-ahead power buying, tomorrow's expected deficit, or safety buffer sizing.",
+      },
+    ]);
+    setErrorMsg(null);
+  };
+
+  const handleCopy = (idx: number, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIdx(idx);
+    setTimeout(() => setCopiedIdx(null), 2000);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -145,12 +163,22 @@ export const EnergyCopilot: React.FC<EnergyCopilotProps> = ({
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-1.5 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white transition-colors cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={handleReset}
+                title="Reset conversation"
+                className="p-1.5 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                title="Close"
+                className="p-1.5 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           {/* Context Banner */}
@@ -174,13 +202,26 @@ export const EnergyCopilot: React.FC<EnergyCopilotProps> = ({
                   </div>
                 )}
                 <div
-                  className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 leading-relaxed text-xs ${
+                  className={`relative group max-w-[85%] rounded-2xl px-3.5 py-2.5 leading-relaxed text-xs ${
                     m.role === "user"
                       ? "bg-white text-neutral-950 font-medium"
                       : "bg-white/[0.06] text-neutral-200 border border-white/10"
                   }`}
                 >
                   <p className="whitespace-pre-wrap">{m.content}</p>
+                  {m.role === "assistant" && (
+                    <button
+                      onClick={() => handleCopy(idx, m.content)}
+                      title="Copy advice to clipboard"
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 rounded-md bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white transition-all cursor-pointer"
+                    >
+                      {copiedIdx === idx ? (
+                        <Check className="w-3 h-3 text-emerald-400" />
+                      ) : (
+                        <Copy className="w-3 h-3" />
+                      )}
+                    </button>
+                  )}
                 </div>
                 {m.role === "user" && (
                   <div className="w-6 h-6 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shrink-0 mt-0.5">
@@ -210,12 +251,14 @@ export const EnergyCopilot: React.FC<EnergyCopilotProps> = ({
           </div>
 
           {/* Quick Prompts (If not loading) */}
-          {!isLoading && messages.length <= 3 && (
+          {!isLoading && messages.length <= 4 && (
             <div className="px-3 pb-2 flex flex-wrap gap-1.5">
               {[
                 "What is our thermal deficit?",
                 "Why procure P90 vs P50?",
                 "Explain the +1,852 MW bias",
+                "Recommend order curve for tomorrow",
+                "How to mitigate imbalance risk?",
               ].map((q) => (
                 <button
                   key={q}
