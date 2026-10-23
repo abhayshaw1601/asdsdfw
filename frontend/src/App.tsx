@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Header } from "./components/Header";
 import { FilterBar } from "./components/FilterBar";
 import { type NavTab } from "./components/navigation";
+import { LandingPage } from "./pages/LandingPage";
 import { DecisionPage } from "./pages/DecisionPage";
 import { AccuracyPage } from "./pages/AccuracyPage";
 import { HorizonPage } from "./pages/HorizonPage";
@@ -20,7 +21,7 @@ const queryClient = new QueryClient({
 });
 
 export const AppContent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<NavTab>("decision");
+  const [activeTab, setActiveTab] = useState<NavTab>("overview");
   const [selectedDay, setSelectedDay] = useState<string>("2026-01-15");
   const [startDate, setStartDate] = useState<string>("2026-01-01");
   const [endDate, setEndDate] = useState<string>("2026-01-31");
@@ -46,20 +47,25 @@ export const AppContent: React.FC = () => {
         onUnitToggle={handleUnitToggle}
       />
 
-      {/* Sticky Filter Bar */}
-      <FilterBar
-        activeTab={activeTab}
-        selectedDay={selectedDay}
-        onDayChange={setSelectedDay}
-        startDate={startDate}
-        endDate={endDate}
-        onDateRangeChange={handleDateRangeChange}
-        deadlineHour={deadlineHour}
-        onDeadlineHourChange={setDeadlineHour}
-      />
+      {/* Sticky Filter Bar (shown on analytical/decision pages) */}
+      {activeTab !== "overview" && activeTab !== "methodology" && (
+        <FilterBar
+          activeTab={activeTab}
+          selectedDay={selectedDay}
+          onDayChange={setSelectedDay}
+          startDate={startDate}
+          endDate={endDate}
+          onDateRangeChange={handleDateRangeChange}
+          deadlineHour={deadlineHour}
+          onDeadlineHourChange={setDeadlineHour}
+        />
+      )}
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {activeTab === "overview" && (
+          <LandingPage onNavigate={setActiveTab} unit={unit} />
+        )}
         {activeTab === "decision" && (
           <DecisionPage day={selectedDay} deadlineHour={deadlineHour} unit={unit} />
         )}

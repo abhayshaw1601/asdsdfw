@@ -21,8 +21,11 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo & Identity */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+          <button
+            onClick={() => onTabChange("overview")}
+            className="flex items-center gap-3 text-left focus:outline-none group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
               <Wind className="w-5 h-5" />
             </div>
             <div>
@@ -39,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
                 Day-ahead power procurement & shortfall buffer sizing
               </p>
             </div>
-          </div>
+          </button>
 
           {/* Right Controls: Unit Toggle */}
           <div className="flex items-center gap-3">
