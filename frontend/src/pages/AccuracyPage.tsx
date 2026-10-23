@@ -106,7 +106,7 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
           badge="Average Error"
           badgeColor="blue"
           subValue={`Normalized MAE: ${(summary.nmae * 100).toFixed(1)}% of mean generation`}
-          icon={<Award className="w-4 h-4 text-blue-400" />}
+          icon={<Award className="w-4 h-4 text-white" />}
         />
         <MetricCard
           label="RMSE (Root Mean Square)"
@@ -146,8 +146,8 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
             </p>
           </div>
           <div className="flex items-center gap-4 text-xs">
-            <span className="flex items-center gap-1.5 text-blue-400">
-              <span className="w-3 h-1 bg-blue-500 rounded" /> Forecast ({unit})
+            <span className="flex items-center gap-1.5 text-white">
+              <span className="w-3 h-1 bg-white rounded" /> Forecast ({unit})
             </span>
             <span className="flex items-center gap-1.5 text-orange-400">
               <span className="w-3 h-1 bg-orange-500 rounded" /> Outturn Actual ({unit})
@@ -170,7 +170,7 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
                         <div className="text-white font-semibold">
                           {new Date(row.fullTime).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" })}
                         </div>
-                        <div className="text-blue-400">Forecast: {row.forecast} {unit}</div>
+                        <div className="text-white">Forecast: {row.forecast} {unit}</div>
                         <div className="text-orange-400">Actual: {row.actual} {unit}</div>
                         {row.error !== null && (
                           <div className={row.error > 0 ? "text-amber-400" : "text-emerald-400"}>
@@ -215,7 +215,7 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
                       return (
                         <div className="bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-xs space-y-1">
                           <div className="font-semibold text-white">Hour {row.hour}</div>
-                          <div className="text-blue-400">MAE: {row.mae} {unit}</div>
+                          <div className="text-white">MAE: {row.mae} {unit}</div>
                           <div className="text-orange-400">Bias: +{row.bias} {unit}</div>
                         </div>
                       );
@@ -296,7 +296,7 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
                     return (
                       <div className="bg-slate-950 border border-slate-800 p-2.5 rounded-lg text-xs space-y-1">
                         <div className="text-orange-400">Actual: {row.actual} {unit}</div>
-                        <div className="text-blue-400">Forecast: {row.forecast} {unit}</div>
+                        <div className="text-white">Forecast: {row.forecast} {unit}</div>
                         <div className={row.error > 0 ? "text-amber-400" : "text-emerald-400"}>
                           Error: {row.error > 0 ? `+${row.error}` : row.error} {unit}
                         </div>

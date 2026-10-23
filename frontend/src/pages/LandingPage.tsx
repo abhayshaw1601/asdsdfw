@@ -191,7 +191,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
               <div className="flex items-center justify-between text-xs text-neutral-400 mb-2">
                 <span>Mean Absolute Error</span>
-                <BarChart3 className="w-4 h-4 text-blue-400" />
+                <BarChart3 className="w-4 h-4 text-white" />
               </div>
               <div className="text-3xl font-light text-white tracking-tight">
                 {formatPower(2127.48, unit, true)}
@@ -200,11 +200,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             </div>
 
             <div className="bg-neutral-900/60 border border-neutral-800/80 rounded-2xl p-6 backdrop-blur-sm">
-              <div className="flex items-center justify-between text-xs text-cyan-400 mb-2">
+              <div className="flex items-center justify-between text-xs text-white mb-2">
                 <span>P95 Reserve Buffer</span>
-                <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                <ShieldCheck className="w-4 h-4 text-white" />
               </div>
-              <div className="text-3xl font-light text-cyan-400 tracking-tight">
+              <div className="text-3xl font-light text-white tracking-tight">
                 {formatPower(5350.90, unit, true)}
               </div>
               <p className="text-[11px] text-neutral-500 mt-1">Hedges 95% of extreme shortfalls</p>
@@ -230,17 +230,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             {/* Card 1 */}
             <div
               onClick={() => onNavigate("decision")}
-              className="group cursor-pointer rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 p-8 transition-all hover:border-emerald-500/40"
+              className="group cursor-pointer rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 p-8 transition-all hover:border-neutral-600"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
                   <Clock className="w-5 h-5" />
                 </div>
-                <span className="inline-flex items-center text-xs font-medium text-emerald-400 group-hover:translate-x-1 transition-transform">
+                <span className="inline-flex items-center text-xs font-medium text-white group-hover:translate-x-1 transition-transform">
                   Launch View <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </span>
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+              <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-white transition-colors">
                 Zero-Lookahead Auction Decision Engine
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed font-light">
@@ -251,17 +251,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             {/* Card 2 */}
             <div
               onClick={() => onNavigate("accuracy")}
-              className="group cursor-pointer rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 p-8 transition-all hover:border-emerald-500/40"
+              className="group cursor-pointer rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 p-8 transition-all hover:border-neutral-600"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
                   <BarChart3 className="w-5 h-5" />
                 </div>
-                <span className="inline-flex items-center text-xs font-medium text-emerald-400 group-hover:translate-x-1 transition-transform">
+                <span className="inline-flex items-center text-xs font-medium text-white group-hover:translate-x-1 transition-transform">
                   Launch View <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </span>
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors">
+              <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-white transition-colors">
                 Accuracy & Diurnal Error Diagnostics
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed font-light">
@@ -272,17 +272,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             {/* Card 3 */}
             <div
               onClick={() => onNavigate("horizon")}
-              className="group cursor-pointer rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 p-8 transition-all hover:border-emerald-500/40"
+              className="group cursor-pointer rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 p-8 transition-all hover:border-neutral-600"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
                   <TrendingUp className="w-5 h-5" />
                 </div>
-                <span className="inline-flex items-center text-xs font-medium text-emerald-400 group-hover:translate-x-1 transition-transform">
+                <span className="inline-flex items-center text-xs font-medium text-white group-hover:translate-x-1 transition-transform">
                   Launch View <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </span>
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+              <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-white transition-colors">
                 Lead-Time Horizon Degradation
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed font-light">
@@ -293,17 +293,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             {/* Card 4 */}
             <div
               onClick={() => onNavigate("buffer")}
-              className="group cursor-pointer rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 p-8 transition-all hover:border-emerald-500/40"
+              className="group cursor-pointer rounded-2xl border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 p-8 transition-all hover:border-neutral-600"
             >
               <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
-                <span className="inline-flex items-center text-xs font-medium text-emerald-400 group-hover:translate-x-1 transition-transform">
+                <span className="inline-flex items-center text-xs font-medium text-white group-hover:translate-x-1 transition-transform">
                   Launch View <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </span>
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-emerald-400 transition-colors">
+              <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-white transition-colors">
                 Empirical Safety Buffer Guidance
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed font-light">
@@ -339,7 +339,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate, unit }) =>
             </div>
 
             <div className="border border-neutral-800/80 bg-black/40 rounded-xl p-5 space-y-2">
-              <div className="flex items-center gap-2 text-blue-400 font-semibold text-xs">
+              <div className="flex items-center gap-2 text-white font-semibold text-xs">
                 <Clock className="w-4 h-4" />
                 <span>2. Auction Gate Deadlines</span>
               </div>

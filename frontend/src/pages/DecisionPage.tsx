@@ -73,7 +73,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-white/10 text-white border border-white/20">
                 Decision Snapshot
               </span>
               <h2 className="text-lg font-bold text-white tracking-tight">
@@ -103,7 +103,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
           badge="Average"
           badgeColor="blue"
           subValue={`Day total: ${formatPower(summary.totalEnergyMwh, unit, false)} ${unit === "MW" ? "MWh" : "GWh"}`}
-          icon={<Zap className="w-4 h-4 text-blue-400" />}
+          icon={<Zap className="w-4 h-4 text-white" />}
         />
         <MetricCard
           label="Peak Generation Output"
@@ -143,8 +143,8 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
             </p>
           </div>
           <div className="flex items-center gap-4 text-xs font-medium">
-            <span className="flex items-center gap-1.5 text-blue-400">
-              <span className="w-3 h-1 bg-blue-500 rounded" /> Decision Forecast
+            <span className="flex items-center gap-1.5 text-white">
+              <span className="w-3 h-1 bg-white rounded" /> Decision Forecast
             </span>
             <span className="flex items-center gap-1.5 text-orange-400">
               <span className="w-3 h-1 bg-orange-500 rounded" /> Outturn Actual (FUELHH)
@@ -167,7 +167,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
                         <div className="font-bold text-white border-b border-slate-800 pb-1">
                           Delivery Time: {label} UTC
                         </div>
-                        <div className="flex justify-between text-blue-400">
+                        <div className="flex justify-between text-white">
                           <span>Decision Forecast:</span>
                           <span className="font-semibold">{row.forecast} {unit}</span>
                         </div>
@@ -245,7 +245,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
                     <td className="py-2.5 px-4 font-mono font-medium text-white">
                       {new Date(p.startTime).toISOString().slice(11, 16)} UTC
                     </td>
-                    <td className="py-2.5 px-4 font-semibold text-blue-400">
+                    <td className="py-2.5 px-4 font-semibold text-white">
                       {formatPower(p.forecast, unit, false)}
                     </td>
                     <td className="py-2.5 px-4 text-orange-400 font-semibold">

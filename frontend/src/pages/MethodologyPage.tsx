@@ -7,7 +7,7 @@ export const MethodologyPage: React.FC = () => {
       {/* Intro Header */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
             <BookOpen className="w-6 h-6" />
           </div>
           <div>
@@ -42,13 +42,13 @@ export const MethodologyPage: React.FC = () => {
 
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm space-y-3">
           <div className="flex items-center gap-2 text-white font-bold text-sm">
-            <CheckCircle2 className="w-4 h-4 text-blue-400" />
+            <CheckCircle2 className="w-4 h-4 text-white" />
             2. Strict No-Lookahead Guarantee
           </div>
           <p className="text-xs text-slate-300 leading-relaxed">
             To prevent retrospective bias in historical simulations, our decision selection algorithm strictly enforces:
           </p>
-          <div className="bg-slate-850 p-3 rounded-lg border border-slate-750 font-mono text-xs text-blue-300">
+          <div className="bg-slate-850 p-3 rounded-lg border border-slate-750 font-mono text-xs text-white">
             publishTime &le; deadline_utc(delivery_day(t))
           </div>
           <p className="text-[11px] text-slate-400 leading-relaxed">
@@ -73,8 +73,8 @@ export const MethodologyPage: React.FC = () => {
               The forecast estimates higher wind production than actual outturn. The trader procures less thermal/market power on D-1. During delivery, the utility experiences a power deficit and must purchase expensive balancing power at imbalance settlement prices.
             </p>
           </div>
-          <div className="bg-blue-950/20 border border-blue-800/40 rounded-lg p-3 text-xs space-y-1">
-            <div className="font-bold text-blue-300">Under-Forecast ($Error &lt; 0$) &rarr; Spill/Surplus</div>
+          <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-3 text-xs space-y-1">
+            <div className="font-bold text-white">Under-Forecast ($Error &lt; 0$) &rarr; Spill/Surplus</div>
             <p className="text-slate-300 text-[11px] leading-relaxed">
               Actual wind generation exceeds expectations. The utility has excess power that can be sold back into the intraday market or settled through the system buy price.
             </p>
@@ -85,33 +85,33 @@ export const MethodologyPage: React.FC = () => {
       {/* Mathematical Formulas */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
         <h3 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-          <Cpu className="w-4 h-4 text-purple-400" />
+          <Cpu className="w-4 h-4 text-white" />
           4. Mathematical Metric Definitions
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <div className="bg-slate-850 p-3.5 rounded-lg border border-slate-750 space-y-1">
             <span className="font-semibold text-white">Error Definition</span>
-            <div className="font-mono text-blue-300 mt-1">Error = Forecast - Actual (MW)</div>
+            <div className="font-mono text-white mt-1">Error = Forecast - Actual (MW)</div>
             <p className="text-[11px] text-slate-400">Evaluated at target delivery half-hour / hour.</p>
           </div>
           <div className="bg-slate-850 p-3.5 rounded-lg border border-slate-750 space-y-1">
             <span className="font-semibold text-white">Mean Absolute Error (MAE)</span>
-            <div className="font-mono text-blue-300 mt-1">MAE = (1/N) &sum; |Error|</div>
+            <div className="font-mono text-white mt-1">MAE = (1/N) &sum; |Error|</div>
             <p className="text-[11px] text-slate-400">Average magnitude of error across all delivery periods.</p>
           </div>
           <div className="bg-slate-850 p-3.5 rounded-lg border border-slate-750 space-y-1">
             <span className="font-semibold text-white">Root Mean Squared Error (RMSE)</span>
-            <div className="font-mono text-blue-300 mt-1">RMSE = &radic;((1/N) &sum; Error&sup2;)</div>
+            <div className="font-mono text-white mt-1">RMSE = &radic;((1/N) &sum; Error&sup2;)</div>
             <p className="text-[11px] text-slate-400">Heavily penalizes large outlier deviations.</p>
           </div>
           <div className="bg-slate-850 p-3.5 rounded-lg border border-slate-750 space-y-1">
             <span className="font-semibold text-white">Normalized MAE (nMAE)</span>
-            <div className="font-mono text-blue-300 mt-1">nMAE = MAE / Mean(Actual)</div>
+            <div className="font-mono text-white mt-1">nMAE = MAE / Mean(Actual)</div>
             <p className="text-[11px] text-slate-400">Percentage error relative to total outturn capacity (~18.4%).</p>
           </div>
           <div className="bg-slate-850 p-3.5 rounded-lg border border-slate-750 space-y-1">
             <span className="font-semibold text-white">Forecast Bias</span>
-            <div className="font-mono text-blue-300 mt-1">Bias = (1/N) &sum; Error</div>
+            <div className="font-mono text-white mt-1">Bias = (1/N) &sum; Error</div>
             <p className="text-[11px] text-slate-400">Systematic directional tendency (+1,851.53 MW in Jan 2026).</p>
           </div>
           <div className="bg-slate-850 p-3.5 rounded-lg border border-slate-750 space-y-1">

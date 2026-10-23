@@ -47,7 +47,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             /* Single Day Picker for Decision View */
             <div className="flex items-center gap-1.5">
               <span className="text-xs font-medium text-slate-400 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-blue-400" />
+                <Calendar className="w-3.5 h-3.5 text-white" />
                 Delivery Day:
               </span>
               <button
@@ -79,7 +79,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             /* Date Range Pickers for Accuracy/Horizon/Buffer */
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs font-medium text-slate-400 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-blue-400" />
+                <Calendar className="w-3.5 h-3.5 text-white" />
                 Delivery Range:
               </span>
               <input

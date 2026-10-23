@@ -137,7 +137,7 @@ export const BufferPage: React.FC<BufferPageProps> = ({
           badge="90% Confidence"
           badgeColor="blue"
           subValue="Covers 9 out of 10 over-forecast shortfalls"
-          icon={<ShieldCheck className="w-4 h-4 text-blue-400" />}
+          icon={<ShieldCheck className="w-4 h-4 text-white" />}
         />
         <MetricCard
           label="Average P95 Safety Buffer"
@@ -180,8 +180,8 @@ export const BufferPage: React.FC<BufferPageProps> = ({
             <span className="flex items-center gap-1.5 text-amber-400">
               <span className="w-3 h-1 bg-amber-500 rounded" /> P95 Buffer ({unit})
             </span>
-            <span className="flex items-center gap-1.5 text-blue-400">
-              <span className="w-3 h-1 bg-blue-500 rounded" /> P90 Buffer ({unit})
+            <span className="flex items-center gap-1.5 text-white">
+              <span className="w-3 h-1 bg-white rounded" /> P90 Buffer ({unit})
             </span>
             <span className="flex items-center gap-1.5 text-emerald-400">
               <span className="w-3 h-1 bg-emerald-500 rounded" /> Mean Shortfall ({unit})
@@ -208,7 +208,7 @@ export const BufferPage: React.FC<BufferPageProps> = ({
                           <span>P95 Safety Buffer:</span>
                           <span className="font-semibold">{row.bufferP95} {unit}</span>
                         </div>
-                        <div className="text-blue-400 flex justify-between">
+                        <div className="text-white flex justify-between">
                           <span>P90 Safety Buffer:</span>
                           <span className="font-semibold">{row.bufferP90} {unit}</span>
                         </div>
@@ -265,7 +265,7 @@ export const BufferPage: React.FC<BufferPageProps> = ({
                     <td className="py-2.5 px-4 font-mono font-medium text-white">
                       {String(r.hour).padStart(2, "0")}:00
                     </td>
-                    <td className="py-2.5 px-4 font-bold text-blue-400">
+                    <td className="py-2.5 px-4 font-bold text-white">
                       {formatPower(r.bufferMw, unit, false)}
                     </td>
                     <td className="py-2.5 px-4 font-semibold text-slate-200">

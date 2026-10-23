@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Zap className="w-3.5 h-3.5 text-amber-400" />
               <span>Unit:</span>
-              <span className="text-blue-400 font-bold">{unit}</span>
+              <span className="text-white font-bold">{unit}</span>
             </button>
           </div>
         </div>
@@ -66,10 +66,10 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 key={item.id}
                 onClick={() => onTabChange(item.id)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+                className={`px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
                   isActive
-                    ? "bg-blue-600 text-white shadow-sm shadow-blue-600/30"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
+                    ? "bg-white text-black font-semibold shadow-sm shadow-white/10"
+                    : "text-slate-300 hover:text-white hover:bg-slate-900"
                 }`}
               >
                 {item.label}

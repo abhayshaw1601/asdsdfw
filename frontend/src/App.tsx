@@ -104,7 +104,7 @@ export const AppContent: React.FC = () => {
             <span>|</span>
             <button
               onClick={() => setActiveTab("methodology")}
-              className="hover:text-blue-400 transition-colors"
+              className="hover:text-white transition-colors"
             >
               Methodology & Docs
             </button>
