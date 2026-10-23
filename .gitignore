@@ -1,0 +1,48 @@
+# Challenge docs and internal planning (requested in gitignore)
+plan.md
+PRD.md
+prd.md
+REint Full Stack SWE challenge v4 Shared.md
+*REint*.md
+.agents/
+.agents
+skills-lock.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Node / Frontend
+**/node_modules/
+**/dist/
+frontend/dist/
+frontend/.vite/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
