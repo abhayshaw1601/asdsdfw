@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -9,8 +9,7 @@ class Settings(BaseSettings):
     data_dir: Path = Path(__file__).resolve().parent.parent.parent / "data"
     static_dir: str | None = os.getenv("STATIC_DIR", None)
 
-    class Config:
-        env_prefix = "APP_"
+    model_config = SettingsConfigDict(env_prefix="APP_")
 
 
 settings = Settings()
