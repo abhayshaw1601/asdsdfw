@@ -7,7 +7,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from backend.app.api.auth_routes import auth_router
+from backend.app.api.chat_routes import chat_router
+from backend.app.api.live_routes import live_router
 from backend.app.api.routes import router
+from backend.app.api.trader_routes import trader_router
 from backend.app.config import settings
 
 app = FastAPI(
@@ -28,6 +31,11 @@ app.add_middleware(
 # Mount API routes
 app.include_router(router)
 app.include_router(auth_router)
+app.include_router(live_router)
+app.include_router(chat_router)
+app.include_router(trader_router)
+
+
 
 
 @app.get("/api/v1/health")

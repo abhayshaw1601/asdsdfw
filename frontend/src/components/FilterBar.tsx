@@ -24,6 +24,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   deadlineHour,
   onDeadlineHourChange,
 }) => {
+  const todayStr = new Date().toISOString().slice(0, 10);
+
   const handleDayStep = (delta: number) => {
     const d = new Date(selectedDay);
     d.setDate(d.getDate() + delta);
@@ -31,7 +33,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     const mm = String(d.getMonth() + 1).padStart(2, "0");
     const dd = String(d.getDate()).padStart(2, "0");
     const newDay = `${yyyy}-${mm}-${dd}`;
-    if (newDay >= "2026-01-01" && newDay <= "2026-01-31") {
+    if (newDay >= "2024-01-01" && newDay <= todayStr) {
       onDayChange(newDay);
     }
   };
@@ -69,7 +71,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             })}
           </div>
           <span className="text-[11px] text-neutral-400 hidden md:inline">
-            Elexon January 2026 Quantitative Error Benchmarks
+            Elexon BMRS Live & Ground Truth Quantitative Benchmarks
           </span>
         </div>
       )}
@@ -86,7 +88,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               </span>
               <button
                 onClick={() => handleDayStep(-1)}
-                disabled={selectedDay <= "2026-01-01"}
+                disabled={selectedDay <= "2024-01-01"}
                 className="p-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 disabled:opacity-20 text-white transition-colors cursor-pointer"
                 title="Previous Day"
               >
@@ -94,20 +96,37 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               </button>
               <input
                 type="date"
-                min="2026-01-01"
-                max="2026-01-31"
+                min="2024-01-01"
+                max={todayStr}
                 value={selectedDay}
                 onChange={(e) => onDayChange(e.target.value)}
                 className="bg-white/[0.08] border border-white/20 hover:border-white/40 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer backdrop-blur-md"
               />
               <button
                 onClick={() => handleDayStep(1)}
-                disabled={selectedDay >= "2026-01-31"}
+                disabled={selectedDay >= todayStr}
                 className="p-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/20 disabled:opacity-20 text-white transition-colors cursor-pointer"
                 title="Next Day"
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
+
+              {/* Quick Jump Buttons */}
+              <div className="hidden sm:flex items-center gap-1 ml-1">
+                <button
+                  onClick={() => onDayChange("2026-01-15")}
+                  className="px-2.5 py-1 bg-white/[0.08] hover:bg-white/[0.16] border border-white/20 rounded-full text-[10px] text-neutral-200 hover:text-white font-medium transition-colors cursor-pointer"
+                >
+                  Jan 15 (Mid)
+                </button>
+                <button
+                  onClick={() => onDayChange(todayStr)}
+                  className="px-2.5 py-1 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 rounded-full text-[10px] text-white font-medium transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Today (Live)
+                </button>
+              </div>
             </div>
           ) : (
             /* Date Range Pickers for Accuracy/Horizon/Buffer */
@@ -118,8 +137,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               </span>
               <input
                 type="date"
-                min="2026-01-01"
-                max="2026-01-31"
+                min="2024-01-01"
+                max={todayStr}
                 value={startDate}
                 onChange={(e) => onDateRangeChange(e.target.value, endDate)}
                 className="bg-white/[0.08] border border-white/20 hover:border-white/40 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer backdrop-blur-md"
@@ -127,8 +146,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               <span className="text-xs text-neutral-400 font-light">&rarr;</span>
               <input
                 type="date"
-                min="2026-01-01"
-                max="2026-01-31"
+                min="2024-01-01"
+                max={todayStr}
                 value={endDate}
                 onChange={(e) => onDateRangeChange(startDate, e.target.value)}
                 className="bg-white/[0.08] border border-white/20 hover:border-white/40 text-white text-xs rounded-full px-3 py-1.5 focus:outline-none focus:border-white font-medium cursor-pointer backdrop-blur-md"
@@ -154,6 +173,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             </div>
           )}
         </div>
+
 
         {/* Decision Deadline Selector (Global) */}
         <div className="flex items-center gap-1.5">

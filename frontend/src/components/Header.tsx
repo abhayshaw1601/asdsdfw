@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Zap, User, LogOut } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Zap, User, LogOut, RefreshCw } from "lucide-react";
 import { NAV_ITEMS } from "./navigation";
 import { AuthModal, type UserSession } from "./AuthModal";
+import { triggerLiveSync } from "../api/client";
 import type { UnitType } from "../api/types";
 
 interface HeaderProps {
@@ -13,7 +15,10 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<string | null>(null);
   const location = useLocation();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const saved = localStorage.getItem("auth_user");
@@ -30,6 +35,22 @@ export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("auth_user");
     setCurrentUser(null);
+  };
+
+  const handleLiveSync = async () => {
+    try {
+      setIsSyncing(true);
+      setSyncStatus("Syncing Elexon...");
+      const res = await triggerLiveSync(3);
+      setSyncStatus(`Synced +${res.actuals_fetched || 0} actuals`);
+      queryClient.invalidateQueries();
+      setTimeout(() => setSyncStatus(null), 4000);
+    } catch (err: any) {
+      setSyncStatus("Sync failed");
+      setTimeout(() => setSyncStatus(null), 3000);
+    } finally {
+      setIsSyncing(false);
+    }
   };
 
   const isItemActive = (path: string, id: string) => {
@@ -95,8 +116,26 @@ export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
               })}
             </nav>
 
-            {/* Right Controls: Unit Toggle & Trader Account */}
+            {/* Right Controls: Live Sync, Unit Toggle & Trader Account */}
             <div className="flex items-center gap-2 shrink-0">
+              {/* Elexon Live Stream Syncer */}
+              <button
+                onClick={handleLiveSync}
+                disabled={isSyncing}
+                title="Sync rolling real-time stream from Elexon BMRS API"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-black/40 hover:bg-black/60 border border-emerald-500/30 hover:border-emerald-500/60 rounded-full text-xs font-medium text-white transition-colors shadow-sm backdrop-blur-md cursor-pointer"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="hidden md:inline text-neutral-300">
+                  {syncStatus || "Live Stream"}
+                </span>
+                <RefreshCw
+                  className={`w-3 h-3 text-emerald-400 ${
+                    isSyncing ? "animate-spin" : ""
+                  }`}
+                />
+              </button>
+
               <button
                 onClick={onUnitToggle}
                 title={`Switch unit to ${unit === "MW" ? "GW" : "MW"}`}
