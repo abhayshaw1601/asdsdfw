@@ -1,11 +1,151 @@
 import React, { useState, useRef, useEffect } from "react";
-import { X, Send, Bot, User, Sparkles, AlertCircle, RotateCcw, Copy, Check } from "lucide-react";
+import { X, Send, Bot, User, Sparkles, AlertCircle, RotateCcw, Copy, Check, CheckCircle2 } from "lucide-react";
 import type { UnitType } from "../api/types";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
+
+const renderFormattedText = (text: string) => {
+  // Strip or parse inline bold (**text**) and code (`code`)
+  const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} className="text-white font-semibold">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return (
+        <code key={i} className="px-1.5 py-0.5 rounded bg-white/10 text-emerald-300 font-mono text-[11px]">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    return part;
+  });
+};
+
+const FormattedContent: React.FC<{ content: string; isUser: boolean }> = ({ content, isUser }) => {
+  if (isUser) {
+    return <p className="whitespace-pre-wrap font-medium">{content}</p>;
+  }
+
+  const lines = content.split("\n");
+  const elements: React.ReactNode[] = [];
+
+  lines.forEach((line, idx) => {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      elements.push(<div key={`sp-${idx}`} className="h-1.5" />);
+      return;
+    }
+
+    // Final Summary Section: What You Have To Do
+    const lower = trimmed.toLowerCase();
+    if (
+      lower.includes("what you have to do") ||
+      lower.includes("what to do") ||
+      lower.includes("action summary")
+    ) {
+      const cleanAction = trimmed.replace(
+        /^[-*•]?\s*(\*\*|#+)?\s*(what you have to do|what to do|action summary)[:*]*\s*/i,
+        ""
+      );
+      elements.push(
+        <div
+          key={idx}
+          className="my-2.5 p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-white space-y-1 shadow-[0_0_15px_rgba(16,185,129,0.12)]"
+        >
+          <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5 font-mono">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            What You Have To Do
+          </div>
+          <div className="text-xs text-neutral-100 font-medium leading-relaxed pl-5">
+            {renderFormattedText(cleanAction)}
+          </div>
+        </div>
+      );
+      return;
+    }
+
+    // Markdown Headers (### or ## or #)
+    if (trimmed.startsWith("### ") || trimmed.startsWith("## ") || trimmed.startsWith("# ")) {
+      const heading = trimmed.replace(/^#+\s*/, "");
+      elements.push(
+        <div key={idx} className="text-xs font-bold text-white tracking-wide mt-2 mb-1 uppercase font-mono">
+          {renderFormattedText(heading)}
+        </div>
+      );
+      return;
+    }
+
+    // Bullet points (- or * or •)
+    if (trimmed.startsWith("- ") || trimmed.startsWith("* ") || trimmed.startsWith("• ")) {
+      const bulletText = trimmed.replace(/^[-*•]\s*/, "");
+      elements.push(
+        <div key={idx} className="flex items-start gap-2 py-0.5">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
+          <div className="text-xs text-neutral-200 leading-relaxed">
+            {renderFormattedText(bulletText)}
+          </div>
+        </div>
+      );
+      return;
+    }
+
+    // Numbered lists (1. or 2.)
+    const numMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
+    if (numMatch) {
+      elements.push(
+        <div key={idx} className="flex items-start gap-2 py-0.5">
+          <span className="font-mono text-[10px] text-emerald-400 font-bold shrink-0 mt-0.5">
+            {numMatch[1]}.
+          </span>
+          <div className="text-xs text-neutral-200 leading-relaxed">
+            {renderFormattedText(numMatch[2])}
+          </div>
+        </div>
+      );
+      return;
+    }
+
+    // Checkbox items (e.g. [ ] or [x])
+    if (/^[-*]?\s*\[[ xX]\]/.test(trimmed)) {
+      const isChecked = /\[[xX]\]/.test(trimmed);
+      const checkText = trimmed.replace(/^[-*]?\s*\[[ xX]\]\s*/, "");
+      elements.push(
+        <div key={idx} className="flex items-start gap-2 py-0.5">
+          <div
+            className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 mt-0.5 ${
+              isChecked
+                ? "bg-emerald-500/20 border-emerald-400 text-emerald-300"
+                : "border-white/20 bg-white/5 text-transparent"
+            }`}
+          >
+            ✓
+          </div>
+          <div className="text-xs text-neutral-200 leading-relaxed">
+            {renderFormattedText(checkText)}
+          </div>
+        </div>
+      );
+      return;
+    }
+
+    // Standard paragraph line
+    elements.push(
+      <p key={idx} className="text-xs text-neutral-200 leading-relaxed">
+        {renderFormattedText(trimmed)}
+      </p>
+    );
+  });
+
+  return <div className="space-y-1">{elements}</div>;
+};
 
 interface EnergyCopilotProps {
   day: string;
@@ -208,7 +348,7 @@ export const EnergyCopilot: React.FC<EnergyCopilotProps> = ({
                       : "bg-white/[0.06] text-neutral-200 border border-white/10"
                   }`}
                 >
-                  <p className="whitespace-pre-wrap">{m.content}</p>
+                  <FormattedContent content={m.content} isUser={m.role === "user"} />
                   {m.role === "assistant" && (
                     <button
                       onClick={() => handleCopy(idx, m.content)}
@@ -272,7 +412,7 @@ export const EnergyCopilot: React.FC<EnergyCopilotProps> = ({
           )}
 
           {/* Footer Input Area */}
-          <div className="p-3 border-t border-white/10 bg-white/[0.03]">
+          <div className="p-3 border-t border-white/10 bg-white/[0.03] space-y-2">
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
                 <input
@@ -304,6 +444,14 @@ export const EnergyCopilot: React.FC<EnergyCopilotProps> = ({
                 </button>
               </div>
             )}
+
+            {/* AI Disclaimer Tag */}
+            <div className="text-center pt-0.5">
+              <span className="text-[10px] text-neutral-400/80 font-sans tracking-tight flex items-center justify-center gap-1.5">
+                <AlertCircle className="w-3 h-3 text-neutral-400 shrink-0" />
+                AI can make mistakes. Verify critical power procurement orders before gate closure.
+              </span>
+            </div>
           </div>
         </div>
       )}
