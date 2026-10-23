@@ -11,7 +11,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#070b09]/85 border-b border-white/10 transition-colors">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/15 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-18 sm:h-20 gap-4">
           {/* Brand Identity / Logo */}
@@ -47,7 +47,7 @@ export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
           </Link>
 
           {/* Central Navigation Pills */}
-          <nav className="flex items-center gap-1 bg-neutral-900/60 border border-neutral-800/80 p-1 rounded-full backdrop-blur-md overflow-x-auto no-scrollbar">
+          <nav className="flex items-center gap-1 bg-black/40 border border-white/15 p-1 rounded-full backdrop-blur-md overflow-x-auto no-scrollbar">
             {NAV_ITEMS.map((item) => (
               <NavLink
                 key={item.id}
@@ -71,7 +71,7 @@ export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
             <button
               onClick={onUnitToggle}
               title={`Switch unit to ${unit === "MW" ? "GW" : "MW"}`}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-neutral-900/80 hover:bg-neutral-800 border border-neutral-700/80 rounded-full text-xs font-semibold text-white transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-black/40 hover:bg-black/60 border border-white/15 rounded-full text-xs font-semibold text-white transition-colors shadow-sm backdrop-blur-md"
             >
               <Zap className="w-3.5 h-3.5 text-white opacity-80" />
               <span className="text-neutral-400 font-light">Unit:</span>

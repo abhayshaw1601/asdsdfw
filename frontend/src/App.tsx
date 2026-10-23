@@ -51,7 +51,7 @@ export const AppContent: React.FC = () => {
           <Route
             path="/decision"
             element={
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
                 <FilterBar
                   activeTab="decision"
                   selectedDay={selectedDay}
@@ -71,7 +71,7 @@ export const AppContent: React.FC = () => {
           <Route
             path="/accuracy"
             element={
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
                 <FilterBar
                   activeTab="accuracy"
                   selectedDay={selectedDay}
@@ -96,7 +96,7 @@ export const AppContent: React.FC = () => {
           <Route
             path="/horizon"
             element={
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
                 <FilterBar
                   activeTab="horizon"
                   selectedDay={selectedDay}
@@ -116,7 +116,7 @@ export const AppContent: React.FC = () => {
           <Route
             path="/buffer"
             element={
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
                 <FilterBar
                   activeTab="buffer"
                   selectedDay={selectedDay}
@@ -141,7 +141,7 @@ export const AppContent: React.FC = () => {
           <Route
             path="/methodology"
             element={
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
                 <MethodologyPage />
               </div>
             }
