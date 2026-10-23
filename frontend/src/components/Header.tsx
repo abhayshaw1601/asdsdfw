@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Zap, User, LogOut } from "lucide-react";
 import { NAV_ITEMS } from "./navigation";
 import { AuthModal, type UserSession } from "./AuthModal";
@@ -13,6 +13,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     const saved = localStorage.getItem("auth_user");
@@ -29,6 +30,16 @@ export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("auth_user");
     setCurrentUser(null);
+  };
+
+  const isItemActive = (path: string, id: string) => {
+    if (id === "overview") return location.pathname === "/";
+    if (id === "accuracy") {
+      return ["/accuracy", "/horizon", "/buffer"].some((p) =>
+        location.pathname.startsWith(p)
+      );
+    }
+    return location.pathname.startsWith(path);
   };
 
   return (
@@ -57,10 +68,6 @@ export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
                   <span className="font-semibold text-white tracking-tight text-sm sm:text-base">
                     Wind Forecast Portal
                   </span>
-                  <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-white/10 text-white border border-white/15">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                    Elexon 2026
-                  </span>
                 </div>
                 <p className="text-[11px] text-neutral-400 hidden lg:block font-light">
                   UK Day-Ahead Energy Decision System
@@ -70,22 +77,22 @@ export const Header: React.FC<HeaderProps> = ({ unit, onUnitToggle }) => {
 
             {/* Central Navigation Pills */}
             <nav className="flex items-center gap-1 bg-black/40 border border-white/15 p-1 rounded-full backdrop-blur-md overflow-x-auto no-scrollbar">
-              {NAV_ITEMS.map((item) => (
-                <NavLink
-                  key={item.id}
-                  to={item.path}
-                  end={item.path === "/"}
-                  className={({ isActive }) =>
-                    `px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
-                      isActive
+              {NAV_ITEMS.map((item) => {
+                const active = isItemActive(item.path, item.id);
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.path}
+                    className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
+                      active
                         ? "bg-white text-neutral-950 font-semibold shadow-sm"
                         : "text-neutral-300 hover:text-white hover:bg-white/10"
-                    }`
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* Right Controls: Unit Toggle & Trader Account */}

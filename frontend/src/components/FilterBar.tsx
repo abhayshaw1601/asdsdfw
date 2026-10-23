@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Calendar, Clock, ChevronLeft, ChevronRight } from "lucide-react";
-import type { NavTab } from "./navigation";
+import { ACCURACY_SUB_ITEMS, type NavTab } from "./navigation";
 
 interface FilterBarProps {
   activeTab: NavTab;
@@ -36,11 +37,42 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   };
 
   const isDecisionView = activeTab === "decision";
+  const isAccuracyDomain = ["accuracy", "horizon", "buffer"].includes(activeTab);
 
   return (
     <div className="relative overflow-hidden rounded-2xl bg-white/[0.05] hover:bg-white/[0.07] backdrop-blur-2xl border border-white/20 p-3.5 sm:p-4 mb-6 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.25),0_12px_36px_rgba(0,0,0,0.45)] transition-all">
       {/* Top specular highlight line */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
+
+      {/* Sub-Navigation for Accuracy & Risk Domain */}
+      {isAccuracyDomain && (
+        <div className="w-full flex items-center justify-between pb-3 mb-3 border-b border-white/10 flex-wrap gap-2">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="text-[11px] uppercase tracking-wider text-neutral-400 font-semibold mr-1">
+              Analytics View:
+            </span>
+            {ACCURACY_SUB_ITEMS.map((sub) => {
+              const isActive = activeTab === sub.id;
+              return (
+                <Link
+                  key={sub.id}
+                  to={sub.path}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                    isActive
+                      ? "bg-white text-neutral-950 font-semibold shadow-sm"
+                      : "text-neutral-300 hover:text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/10"
+                  }`}
+                >
+                  {sub.label}
+                </Link>
+              );
+            })}
+          </div>
+          <span className="text-[11px] text-neutral-400 hidden md:inline">
+            Elexon January 2026 Quantitative Error Benchmarks
+          </span>
+        </div>
+      )}
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         {/* Date Selector(s) */}
