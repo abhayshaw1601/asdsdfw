@@ -229,28 +229,24 @@ def calculate_imbalance_savings(
     user: Dict[str, Any] = Depends(get_current_user_token),
 ) -> Dict[str, Any]:
     """Calculate projected £ cash-out penalty savings from safety buffer hedging."""
-    # Empirical Jan 2026 ground truth values:
-    # 744 hours, Mean Absolute Error = 2,127 MW, Mean Over-Forecast Bias = +1,852 MW
-    # Total monthly unhedged shortfall = 1,851.53 MW * 744 hours = 1,377,538 MWh
-    # With P90 hedge (1,851 MW buffer), ~90% of physical shortfall events are covered.
-    hours = 744
+    # Institutional UK Balancing Mechanism spread economics:
+    # Net penalty spread = System Buy Price (£/MWh) - Day-Ahead Market Price (~£78/MWh benchmark)
+    # Average daily peak shortfall exposure: ~2.5 half-hour equivalent hours = 5 settlement periods
+    da_price_benchmark = 78.0
+    cashout_spread = max(15.0, imbalance_price_gbp - da_price_benchmark)
     bias_mw = 1851.53
-    total_shortfall_mwh = bias_mw * hours
-    total_unhedged_penalty_gbp = total_shortfall_mwh * imbalance_price_gbp
-
-    # Avoided cash-out penalty (assuming 88-92% coverage from P90 hedge)
-    coverage_ratio = buffer_quantile
-    avoided_penalty_gbp = total_unhedged_penalty_gbp * coverage_ratio
-    daily_avoided_gbp = avoided_penalty_gbp / 31.0
+    daily_shortfall_exposure_mwh = bias_mw * 2.5
+    daily_avoided_gbp = daily_shortfall_exposure_mwh * cashout_spread * buffer_quantile
+    monthly_avoided_gbp = daily_avoided_gbp * 31.0
 
     return {
-        "hours_evaluated": hours,
         "imbalance_price_gbp_per_mwh": imbalance_price_gbp,
+        "day_ahead_price_benchmark": da_price_benchmark,
+        "cashout_spread_gbp": round(cashout_spread, 2),
         "buffer_quantile": buffer_quantile,
         "mean_overforecast_bias_mw": bias_mw,
-        "total_unhedged_exposure_mwh": round(total_shortfall_mwh, 1),
-        "total_unhedged_penalty_gbp": round(total_unhedged_penalty_gbp, 2),
-        "estimated_savings_gbp": round(avoided_penalty_gbp, 2),
+        "daily_shortfall_exposure_mwh": round(daily_shortfall_exposure_mwh, 1),
+        "estimated_savings_gbp": round(monthly_avoided_gbp, 2),
         "daily_average_savings_gbp": round(daily_avoided_gbp, 2),
         "trader": user.get("name", user.get("sub")),
     }

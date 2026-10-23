@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -24,6 +24,7 @@ import { useDecisionQuery } from "../hooks/useForecastData";
 import { MetricCard } from "../components/MetricCard";
 import { ErrorAlert } from "../components/ErrorAlert";
 import { EnergyCopilot } from "../components/EnergyCopilot";
+import { TradeJournal } from "../components/TradeJournal";
 import type { UnitType, SeriesPoint } from "../api/types";
 import { formatPower } from "../lib/units";
 
@@ -48,6 +49,31 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
   const [showDemandOverlay, setShowDemandOverlay] = useState<boolean>(true);
   const [isExporting, setIsExporting] = useState(false);
   const [portfolioSaved, setPortfolioSaved] = useState(false);
+  const [customPortfolios, setCustomPortfolios] = useState<Array<{ name: string; demandMw: number }>>([]);
+  const [imbalancePrice, setImbalancePrice] = useState<number>(125);
+
+  const fetchCustomPortfolios = async () => {
+    const token = localStorage.getItem("auth_token");
+    if (!token) {
+      setCustomPortfolios([]);
+      return;
+    }
+    try {
+      const res = await fetch("/api/v1/trader/portfolios", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCustomPortfolios(Array.isArray(data) ? data : []);
+      }
+    } catch {
+      // ignore
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomPortfolios();
+  }, []);
 
   const handleExportOrderSheet = async () => {
     const token = localStorage.getItem("auth_token");
@@ -105,6 +131,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
       if (res.ok) {
         setPortfolioSaved(true);
         setTimeout(() => setPortfolioSaved(false), 3000);
+        await fetchCustomPortfolios();
       }
     } catch {
       // ignore
@@ -242,14 +269,15 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
               <Sliders className="w-3.5 h-3.5 text-white opacity-80" />
               Consumer Demand:
             </span>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 flex-wrap">
               {[
                 { label: "14 GW", mw: 14000 },
                 { label: "18 GW", mw: 18000 },
                 { label: "22 GW", mw: 22000 },
+                ...customPortfolios.map((p) => ({ label: p.name, mw: p.demandMw })),
               ].map((preset) => (
                 <button
-                  key={preset.mw}
+                  key={preset.label}
                   onClick={() => setConsumerDemandMw(preset.mw)}
                   className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all ${
                     consumerDemandMw === preset.mw
@@ -338,17 +366,33 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
         </div>
 
         {/* Financial Imbalance Risk Mitigation Banner */}
-        <div className="mt-4 p-3 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+        <div className="mt-4 p-3 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
             <span className="text-neutral-300">
               <strong className="text-white font-medium">Imbalance Risk Mitigated:</strong> Estimated{" "}
-              <span className="text-white font-semibold">£208,000/day</span> in cash-out penalties avoided via P90 buffer (at £125/MWh System Buy Price).
+              <span className="text-white font-semibold">
+                £{Math.round(1851.53 * 2.5 * Math.max(15, imbalancePrice - 78) * 0.90).toLocaleString()}/day
+              </span>{" "}
+              in cash-out penalties avoided via P90 buffer.
             </span>
           </div>
-          <span className="text-[11px] text-neutral-400 font-mono">
-            Bias: +1,852 MW Hedged
-          </span>
+          <div className="flex items-center gap-1.5 text-[11px]">
+            <span className="text-neutral-400 font-mono">Cash-out SBP:</span>
+            {[90, 125, 180].map((price) => (
+              <button
+                key={price}
+                onClick={() => setImbalancePrice(price)}
+                className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors ${
+                  imbalancePrice === price
+                    ? "bg-white text-neutral-950 font-bold"
+                    : "bg-white/10 text-neutral-300 hover:text-white"
+                }`}
+              >
+                £{price}/MWh
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -537,6 +581,15 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
           </table>
         </div>
       </div>
+
+      {/* Operational Trade Journal & Decision Notes (Phase 9 Logged-in Feature) */}
+      <TradeJournal
+        day={day}
+        onOpenAuth={() => {
+          const authBtn = document.querySelector<HTMLButtonElement>("header button:last-child");
+          authBtn?.click();
+        }}
+      />
 
       {/* Groq-Powered Energy AI Copilot Drawer */}
       <EnergyCopilot
