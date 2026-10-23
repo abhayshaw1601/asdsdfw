@@ -20,8 +20,10 @@ class Settings(BaseSettings):
     app_name: str = "Wind Forecast Decision Portal"
     data_dir: Path = _resolve_data_dir()
     static_dir: str | None = os.getenv("STATIC_DIR", None)
+    mongo_uri: str = os.getenv("MONGO_URI", "mongodb://localhost:27017/wind_portal")
+    jwt_secret_key: str = os.getenv("JWT_SECRET_KEY", "wind-portal-super-secret-key-2026-elexon")
 
-    model_config = SettingsConfigDict(env_prefix="APP_")
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
 
 settings = Settings()

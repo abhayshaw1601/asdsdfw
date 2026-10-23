@@ -127,7 +127,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         <div className="flex items-center gap-1.5">
           <label className="text-xs font-medium text-neutral-300 flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5 text-white opacity-80" />
-            Freeze:
+            Freeze (UK):
           </label>
           <select
             value={deadlineHour}
@@ -136,7 +136,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           >
             {Array.from({ length: 24 }).map((_, h) => (
               <option key={h} value={h} className="bg-neutral-950 text-white">
-                {String(h).padStart(2, "0")}:00 London
+                {String(h).padStart(2, "0")}:00{h === 9 ? " (Auction Default)" : ""}
               </option>
             ))}
           </select>
