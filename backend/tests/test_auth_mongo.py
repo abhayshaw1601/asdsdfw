@@ -1,7 +1,9 @@
 """Tests for MongoDB authentication and user registration."""
 
 import uuid
+
 from fastapi.testclient import TestClient
+
 from backend.app.main import app
 
 client = TestClient(app)

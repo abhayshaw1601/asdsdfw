@@ -13,7 +13,7 @@ logger = logging.getLogger("wind_portal.db.mongo")
 
 # Try importing pymongo; gracefully handle if not installed
 try:
-    from pymongo import MongoClient, ASCENDING
+    from pymongo import ASCENDING, MongoClient
     from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
     PYMONGO_AVAILABLE = True
 except ImportError:
