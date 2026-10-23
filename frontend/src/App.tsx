@@ -39,13 +39,15 @@ export const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
-      {/* Top Header */}
-      <Header
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        unit={unit}
-        onUnitToggle={handleUnitToggle}
-      />
+      {/* Top Header (shown on analytical/decision pages) */}
+      {activeTab !== "overview" && (
+        <Header
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          unit={unit}
+          onUnitToggle={handleUnitToggle}
+        />
+      )}
 
       {/* Sticky Filter Bar (shown on analytical/decision pages) */}
       {activeTab !== "overview" && activeTab !== "methodology" && (
@@ -62,7 +64,7 @@ export const AppContent: React.FC = () => {
       )}
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className={`flex-1 w-full ${activeTab === "overview" ? "" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"}`}>
         {activeTab === "overview" && (
           <LandingPage onNavigate={setActiveTab} unit={unit} />
         )}
