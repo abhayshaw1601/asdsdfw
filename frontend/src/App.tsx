@@ -89,11 +89,11 @@ export const AppContent: React.FC = () => {
       <footer className="border-t border-slate-900 bg-slate-950 py-6 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div>
-            Wind Forecast Decision Portal • Built for UK Day-Ahead Electricity Buying
+            Wind Forecast Decision Portal | Built for UK Day-Ahead Electricity Buying
           </div>
           <div className="flex items-center gap-4 text-slate-400">
             <span>Elexon BMRS Datasets (FUELHH & WINDFOR)</span>
-            <span>•</span>
+            <span>|</span>
             <button
               onClick={() => setActiveTab("methodology")}
               className="hover:text-blue-400 transition-colors"

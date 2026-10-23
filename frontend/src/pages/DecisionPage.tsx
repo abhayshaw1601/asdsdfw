@@ -123,7 +123,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
         />
         <MetricCard
           label="Decision Lead Time"
-          value="~15h – 39h"
+          value="~15h - 39h"
           badge="Auction Gate"
           badgeColor="amber"
           subValue="Time between D-1 09:00 and delivery hours"
@@ -249,7 +249,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
                       {formatPower(p.forecast, unit, false)}
                     </td>
                     <td className="py-2.5 px-4 text-orange-400 font-semibold">
-                      {p.actual !== null ? formatPower(p.actual, unit, false) : "—"}
+                      {p.actual !== null ? formatPower(p.actual, unit, false) : "-"}
                     </td>
                     <td className="py-2.5 px-4">
                       {p.error !== null ? (
@@ -263,7 +263,7 @@ export const DecisionPage: React.FC<DecisionPageProps> = ({
                           {isOver ? `+${formatPower(p.error, unit, false)} (Shortfall)` : `${formatPower(p.error, unit, false)} (Surplus)`}
                         </span>
                       ) : (
-                        "—"
+                        "-"
                       )}
                     </td>
                     <td className="py-2.5 px-4 text-slate-400 font-mono">

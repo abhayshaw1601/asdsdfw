@@ -6,7 +6,7 @@ export function formatPower(
   showUnit: boolean = true
 ): string {
   if (valueMw === null || valueMw === undefined || Number.isNaN(valueMw)) {
-    return "—";
+    return "N/A";
   }
 
   if (unit === "GW") {

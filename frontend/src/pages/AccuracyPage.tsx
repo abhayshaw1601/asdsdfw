@@ -196,7 +196,7 @@ export const AccuracyPage: React.FC<AccuracyPageProps> = ({
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
           <div className="mb-4">
             <h3 className="text-sm font-bold text-white tracking-tight">
-              Error by Local Hour of Day (00:00 – 23:00)
+              Error by Local Hour of Day (00:00 - 23:00)
             </h3>
             <p className="text-xs text-slate-400">
               MAE (blue bars) and positive Bias (orange line) across 24 hours

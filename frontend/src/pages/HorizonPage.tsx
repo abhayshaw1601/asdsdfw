@@ -69,14 +69,14 @@ export const HorizonPage: React.FC<HorizonPageProps> = ({ deadlineHour, unit }) 
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-base font-bold text-white tracking-tight">
-                  Day-Ahead Auction Lead Horizon Window: ~15h – 39h
+                  Day-Ahead Auction Lead Horizon Window: ~15h to 39h
                 </h2>
                 <span className="text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">
                   Frozen at {deadlineHour.toString().padStart(2, "0")}:00 London
                 </span>
               </div>
               <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
-                UK power purchase orders on D-1 close around 09:20–09:50 UK time. Freezing forecasts at {deadlineHour.toString().padStart(2, "0")}:00 D-1 implies a <strong>15-hour lead time</strong> for midnight delivery (00:00 D) and up to a <strong>39-hour lead time</strong> for late evening delivery (23:00 D).
+                UK power purchase orders on D-1 close around 09:20-09:50 UK time. Freezing forecasts at {deadlineHour.toString().padStart(2, "0")}:00 D-1 implies a <strong>15-hour lead time</strong> for midnight delivery (00:00 D) and up to a <strong>39-hour lead time</strong> for late evening delivery (23:00 D).
               </p>
             </div>
           </div>

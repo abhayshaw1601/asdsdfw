@@ -170,7 +170,7 @@ export const BufferPage: React.FC<BufferPageProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div>
             <h3 className="text-sm font-bold text-white tracking-tight">
-              Recommended Procurement Buffer by Hour of Day (00:00 – 23:00)
+              Recommended Procurement Buffer by Hour of Day (00:00 - 23:00)
             </h3>
             <p className="text-xs text-slate-400">
               Values in {unit} calculated from {startDate} to {endDate} at {deadlineHour.toString().padStart(2, "0")}:00 London deadline
@@ -241,7 +241,7 @@ export const BufferPage: React.FC<BufferPageProps> = ({
             Hourly Safety Buffer Procurement Guidance Table
           </h3>
           <span className="text-xs text-slate-400">
-            24 delivery periods • Target: P{(selectedConfidence * 100).toFixed(0)}
+            24 delivery periods | Target: P{(selectedConfidence * 100).toFixed(0)}
           </span>
         </div>
         <div className="overflow-x-auto max-h-80 overflow-y-auto">
